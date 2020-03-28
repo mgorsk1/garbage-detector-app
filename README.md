@@ -1,0 +1,1 @@
+# gargabe-detector-app
