@@ -1,0 +1,7 @@
+dotted==0.1.8
+gpiozero==1.5.1
+opencv-contrib-python==4.1.0.25  # norot
+picamera==1.13
+pigpio==1.46
+piny==0.6.0
+RPi.GPIO==0.7.0
