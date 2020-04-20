@@ -1,5 +1,5 @@
 import sqlite3, {Database} from 'sqlite3';
-import {emptyUserStats, Message, Statistics} from './types';
+import {CollectionEvent, emptyUserStats, Message, Statistics} from './types';
 
 export function openDatabase(): Database {
   const db = new sqlite3.Database(':memory:');
@@ -22,7 +22,6 @@ export function insertMessage(db: Database, msg: Message, time: string) {
 }
 
 export function getStatistics(db: Database, callback: (stats: Statistics) => void) {
-
   db.all('SELECT user, class, count(*) as count FROM collections GROUP BY user, class', (err, rows) => {
     if (err) {
       console.error(`Failed to query statistics: ${err.message}`);
@@ -35,5 +34,20 @@ export function getStatistics(db: Database, callback: (stats: Statistics) => voi
       stats[row.user] = { ...stats[row.user], [row.class]: row.count };
     });
     callback(stats);
+  });
+}
+
+export function getTimeSeries(db: Database, user: string, timeFrom: string, timeTo: string, callback: (series: CollectionEvent[]) => void) {
+  db.all('SELECT user, class, time FROM collections WHERE user = ? AND time >= ? AND time <= ? ORDER BY TIME',
+    [user, timeFrom, timeTo], (err, rows) => {
+    if (err) {
+      console.error(`Failed to query time series for user ${user}: ${err.message}`);
+    }
+    const series: CollectionEvent[] = rows.map(row => ({
+      user: row.user,
+      class: row.class,
+      time: row.time,
+    }));
+    callback(series);
   });
 }

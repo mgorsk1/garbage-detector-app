@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "lerna bootstrap && lerna run start --stream"
+    "bootstrap": "lerna bootstrap",
+    "start": "lerna run start --stream"
   },
   "author": "",
   "license": "ISC",

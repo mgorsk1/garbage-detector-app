@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import WebSocket from 'ws';
-import {Message} from './types';
+import {CollectionEvent, Message} from './types';
 import {ExtWebSocket} from './extWebSocket';
-import {getStatistics, insertMessage, openDatabase} from './database';
+import {getStatistics, getTimeSeries, insertMessage, openDatabase} from './database';
 
 const app = express();
 app.use(cors());
@@ -59,7 +59,28 @@ app.post('/collections', (req, res) => {
 
 app.get('/statistics', (req, res) => {
   getStatistics(db, stats => {
-    res.send(JSON.stringify(stats));
+    res.json(stats);
+  });
+});
+
+app.get('/time-series', (req, res) => {
+  if (!req.query.user) {
+    res.status(400).send('Missing \'user\' query parameter');
+    return;
+  }
+  if (!req.query.timeFrom) {
+    res.status(400).send('Missing \'timeFrom\' query parameter');
+    return;
+  }
+  if (!req.query.timeTo) {
+    res.status(400).send('Missing \'timeTo\' query parameter');
+    return;
+  }
+  const user = req.query.user as string;
+  const timeFrom = req.query.timeFrom as string;
+  const timeTo = req.query.timeTo as string;
+  getTimeSeries(db, user, timeFrom, timeTo, (series: CollectionEvent[]) => {
+    res.json(series);
   });
 });
 

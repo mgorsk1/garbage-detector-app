@@ -20,3 +20,9 @@ export const emptyUserStats: UserStatistics = {
   plastic: 0,
   rest: 0
 };
+
+export interface CollectionEvent {
+  user: string;
+  class: GarbageClass;
+  time: string;
+}
