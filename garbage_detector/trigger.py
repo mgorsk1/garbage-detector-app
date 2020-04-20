@@ -10,6 +10,9 @@ from garbage_detector import config
 
 
 class Trigger(ABC):
+    def __init__(self, *args, **kwargs):
+        pass
+
     @abstractmethod
     def _check(self):
         pass
