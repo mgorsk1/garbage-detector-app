@@ -1,14 +1,20 @@
 import express from 'express';
+import cors from 'cors';
 import http from 'http';
 import WebSocket from 'ws';
-import {Message} from './message';
+import {Message} from './types';
 import {ExtWebSocket} from './extWebSocket';
+import {getStatistics, insertMessage, openDatabase} from './database';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 const PORT = 8080;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/subscribe' });
+
+const db = openDatabase();
+
 wss.on('connection', (ws: ExtWebSocket) => {
   ws.isAlive = true;
   ws.on('pong', () => {
@@ -46,12 +52,15 @@ const broadcastMessage = (msg: Message) => {
 app.post('/collections', (req, res) => {
   const msg: Message = req.body;
   console.log(`Received message from user '${msg.user}', identified class: '${msg.class}'`);
+  insertMessage(db, msg, new Date().toISOString());
   broadcastMessage(req.body);
   res.send('Collected.')
 });
 
 app.get('/statistics', (req, res) => {
-  res.send('TODO: statistics');
+  getStatistics(db, stats => {
+    res.send(JSON.stringify(stats));
+  });
 });
 
 server.listen(PORT, () => {
