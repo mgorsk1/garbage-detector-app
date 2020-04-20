@@ -1,17 +1,19 @@
 camera:
   resolution:
-    width: ${CAMERA_RESOLUTION_WIDTH:- 640}
-    height: ${CAMERA_RESOLUTION_HEIGHT:- 480}
-  framerate: ${CAMERA_FRAMERATE:- 30}
+    width: ${CAMERA_RESOLUTION_WIDTH:-640}
+    height: ${CAMERA_RESOLUTION_HEIGHT:-480}
+  framerate: ${CAMERA_FRAMERATE:-4}
 trigger:
-  class: ${TRIGGER_CLASS:- 'DistanceSensorTrigger'}
+  cls: ${TRIGGER_CLS:-DistanceSensorTrigger}
   parameters:
-    echo: ${TRIGGER_PARAMETERS_ECHO:- 20}
-    trigger: ${TRIGGER_PARAMETERS_TRIGGER:- 26}
-    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:- 40}
-    distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:- 60}
+    echo: ${TRIGGER_PARAMETERS_ECHO:-20}
+    trigger: ${TRIGGER_PARAMETERS_TRIGGER:-26}
+    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-40}
+    distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-60}
+    led: ${TRIGGER_PARAMETERS_LED:-24}
+  delay: ${TRIGGER_DELAY:-3}
 leds:
-  green: ${LEDS_GREEN_PIN:- 27}
-  red: ${LEDS_RED_PIN:- 14}
-  yellow: ${LEDS_YELLOW_PIN:- 23}
-  blue: ${LEDS_BLUE_PIN:- 22}
+  green: ${LEDS_GREEN_PIN:-27}
+  red: ${LEDS_RED_PIN:-14}
+  yellow: ${LEDS_YELLOW_PIN:-23}
+  blue: ${LEDS_BLUE_PIN:-22}

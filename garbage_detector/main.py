@@ -1,24 +1,78 @@
+import logging
 import time
+from datetime import datetime
+from typing import Any
 
 import cv2
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 
-camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-raw_capture = PiRGBArray(camera, size=camera.resolution)
+from garbage_detector import config
+from garbage_detector.classifier import GarbageClassifier
+from garbage_detector.trigger import get_trigger_class
+from garbage_detector.utils.spinner import LEDBoardSpinner
+from garbage_detector.utils.spinner import LEDBoardSpinnerWithConfirmation
 
-# allow the camera to warmup
-time.sleep(0.1)
+trigger: Any
+camera: Any
+raw_capture: Any
+classifier: GarbageClassifier
 
-for frame in camera.capture_continuous(raw_capture, format='bgr', use_video_port=True):
-    image = frame.array
 
-    cv2.imshow('Frame', image)
-    key = cv2.waitKey(1) & 0xFF
+@LEDBoardSpinnerWithConfirmation
+def setup():
+    global trigger
+    global camera
+    global raw_capture
+    global classifier
 
-    raw_capture.truncate(0)
+    # allow the camera to warmup
+    time.sleep(0.1)
 
-    if key == ord('q'):
-        break
+    camera = PiCamera()
+    camera.resolution = (int(config.camera.resolution.width), int(config.camera.resolution.height))
+    camera.framerate = int(config.camera.framerate)
+    raw_capture = PiRGBArray(camera, size=camera.resolution)
+
+    trigger = get_trigger_class(config.trigger.cls)(**config.trigger.parameters)
+
+    classifier = GarbageClassifier()
+
+
+@LEDBoardSpinner
+def classify(classifier: GarbageClassifier, image):
+    return classifier.classify(image)
+
+
+if __name__ == '__main__':
+    setup()
+
+    start = None
+
+    for frame in camera.capture_continuous(raw_capture, format='bgr', use_video_port=True):
+        image = cv2.flip(frame.array, 0)
+
+        if trigger.check():
+            if start is None:
+                start = datetime.now()
+
+            in_range_for = (datetime.now() - start).total_seconds()
+            logging.info(f'In range for {in_range_for}')
+            if in_range_for > int(config.trigger.delay):
+                print(in_range_for)
+
+                classify(classifier, image)
+
+                start = None
+        else:
+            start = None
+
+        # @TODO delete before going live
+        cv2.imshow('Frame', image)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        raw_capture.truncate(0)
+
+        if key == ord('q'):
+            break
