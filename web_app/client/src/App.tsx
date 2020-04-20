@@ -16,6 +16,7 @@ import {
 } from "./Styles";
 import styled from "styled-components";
 import Idea from "./icons/Idea";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
 const Trivia = styled.div`
   background: #fffef6;
@@ -90,52 +91,59 @@ const App = () => {
 
   return (
     <Container>
-      <Styles />
-      <Menu />
-      <Logo>
-        <LogoIcon />
-        <div>
-          <div>Bin</div>
-          <div>Telligence</div>
-        </div>
-      </Logo>
-      <Wrapper>
-        <Picture></Picture>
-        <section>
-          <Notification>You've got trash!</Notification>
-          <Info>
-            Our A.I. categorises this as:
-            <Category>
-              <CategoryName type={0}>
-                Plastic
-                <Percentage>99%</Percentage>
-              </CategoryName>
-              <CategoryName type={1}>
-                Metal
-                <Percentage>60%</Percentage>
-              </CategoryName>
-            </Category>
-            <Trivia>
-              <Side>
-                <Idea width={40} height={40} />
-              </Side>
-              <Content>
-                <h2>Did you know?</h2>
-                <p>
-                  Normally, plastic items take up to 1000 years to decompose in
-                  landfills. But plastic bags we use in our everyday life take
-                  10-20 years to decompose, while plastic bottles take 450
-                  years.
-                </p>
-              </Content>
-            </Trivia>
-          </Info>
-        </section>
-      </Wrapper>
-      <WsSignal>
-        <WsText>{connect ? "connected" : "connecting"}</WsText>
-        <WsIcon connect={connect}></WsIcon>
-      </WsSignal>
+      <Router>
+        <Styles />
+        <Menu />
+        <Logo>
+          <LogoIcon />
+          <div>
+            <div>Bin</div>
+            <div>Telligence</div>
+          </div>
+        </Logo>
+        <Switch>
+          <Route path="/detect">
+            <Wrapper>
+              <Picture></Picture>
+              <section>
+                <Notification>You've got trash!</Notification>
+                <Info>
+                  Our A.I. categorises this as:
+                  <Category>
+                    <CategoryName type={0}>
+                      Plastic
+                      <Percentage>99%</Percentage>
+                    </CategoryName>
+                    <CategoryName type={1}>
+                      Metal
+                      <Percentage>60%</Percentage>
+                    </CategoryName>
+                  </Category>
+                  <Trivia>
+                    <Side>
+                      <Idea width={40} height={40} />
+                    </Side>
+                    <Content>
+                      <h2>Did you know?</h2>
+                      <p>
+                        Normally, plastic items take up to 1000 years to
+                        decompose in landfills. But plastic bags we use in our
+                        everyday life take 10-20 years to decompose, while
+                        plastic bottles take 450 years.
+                      </p>
+                    </Content>
+                  </Trivia>
+                </Info>
+              </section>
+            </Wrapper>
+          </Route>
+          <Route path="/analyze">Some user charts</Route>
+        </Switch>
+        <WsSignal>
+          <WsText>{connect ? "connected" : "connecting"}</WsText>
+          <WsIcon connect={connect}></WsIcon>
+        </WsSignal>
+      </Router>
     </Container>
   );
 };
