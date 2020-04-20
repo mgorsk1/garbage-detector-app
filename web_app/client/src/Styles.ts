@@ -10,7 +10,7 @@ export const Styles = createGlobalStyle`
   }
 
   html {
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: #fff;
     color: #222;
   }
@@ -98,8 +98,7 @@ export const Notification = styled.h1`
 `;
 
 export const Percentage = styled.span`
-  color: #fff;
-  font-size: 18px;
+  color: rgba(0, 0, 0, 0.1);
   margin-left: 22px;
 `;
 

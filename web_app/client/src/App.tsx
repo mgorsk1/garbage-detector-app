@@ -15,10 +15,38 @@ import {
   Percentage,
 } from "./Styles";
 import styled from "styled-components";
+import Idea from "./icons/Idea";
 
 const Trivia = styled.div`
-  background: yellow;
-  padding: 20px;
+  background: #fffef6;
+  padding: 30px;
+  color: #cacaa1;
+  font-size: 14px;
+  color: #222;
+  line-height: 1.5;
+  margin-top: 50px;
+  display: flex;
+
+  h2 {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+`;
+
+const Side = styled.div`
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+`;
+
+const Content = styled.div`
+  flex: 4;
 `;
 
 const WsSignal = styled.div`
@@ -88,9 +116,18 @@ const App = () => {
               </CategoryName>
             </Category>
             <Trivia>
-              Did you know your plastic trash will get a new life by being
-              recycled into many products such as shampoo bottles, traffic cones
-              and trash bags?
+              <Side>
+                <Idea width={40} height={40} />
+              </Side>
+              <Content>
+                <h2>Did you know?</h2>
+                <p>
+                  Normally, plastic items take up to 1000 years to decompose in
+                  landfills. But plastic bags we use in our everyday life take
+                  10-20 years to decompose, while plastic bottles take 450
+                  years.
+                </p>
+              </Content>
             </Trivia>
           </Info>
         </section>
