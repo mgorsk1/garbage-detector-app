@@ -68,17 +68,9 @@ app.get('/time-series', (req, res) => {
     res.status(400).send('Missing \'user\' query parameter');
     return;
   }
-  if (!req.query.timeFrom) {
-    res.status(400).send('Missing \'timeFrom\' query parameter');
-    return;
-  }
-  if (!req.query.timeTo) {
-    res.status(400).send('Missing \'timeTo\' query parameter');
-    return;
-  }
   const user = req.query.user as string;
-  const timeFrom = req.query.timeFrom as string;
-  const timeTo = req.query.timeTo as string;
+  const timeFrom = req.query.timeFrom as string | undefined;
+  const timeTo = req.query.timeTo as string | undefined;
   getTimeSeries(db, user, timeFrom, timeTo, (series: CollectionEvent[]) => {
     res.json(series);
   });

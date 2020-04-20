@@ -37,9 +37,20 @@ export function getStatistics(db: Database, callback: (stats: Statistics) => voi
   });
 }
 
-export function getTimeSeries(db: Database, user: string, timeFrom: string, timeTo: string, callback: (series: CollectionEvent[]) => void) {
-  db.all('SELECT user, class, time FROM collections WHERE user = ? AND time >= ? AND time <= ? ORDER BY TIME',
-    [user, timeFrom, timeTo], (err, rows) => {
+export function getTimeSeries(db: Database, user: string, timeFrom?: string, timeTo?: string, callback: (series: CollectionEvent[]) => void) {
+  let query = 'SELECT user, class, time FROM collections WHERE user = ?';
+  let params = [user];
+  if (timeFrom) {
+    query = query + ' AND time >= ?';
+    params.push(timeFrom);
+  }
+  if (timeTo) {
+    query = query + ' AND time <= ?';
+    params.push(timeTo);
+  }
+  query = query + ' ORDER BY time';
+
+  db.all(query, params, (err, rows) => {
     if (err) {
       console.error(`Failed to query time series for user ${user}: ${err.message}`);
     }
