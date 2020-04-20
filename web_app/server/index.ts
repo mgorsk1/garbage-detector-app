@@ -9,7 +9,7 @@ import {getStatistics, insertMessage, openDatabase} from './database';
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = 8080;
+const port = 9000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/subscribe' });
 
@@ -63,6 +63,6 @@ app.get('/statistics', (req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Garbage collection API started on port ${PORT}!`);
+server.listen(port, () => {
+  console.log(`Garbage collection API started on port ${port}!`);
 });

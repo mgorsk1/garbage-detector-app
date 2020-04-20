@@ -4,30 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:client": "parcel ./client/index.html",
-    "start:api": "ts-node-dev ./server/index.ts",
-    "start": "concurrently \"npm run start:client\" \"npm run start:api\""
+    "start": "lerna run start --stream"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/express": "4.17.6",
-    "@types/react": "16.9.34",
-    "@types/ws": "^7.2.4",
-    "parcel": "1.12.4",
-    "typescript": "3.8.3"
-  },
-  "dependencies": {
-    "@types/cors": "^2.8.6",
-    "@types/react-dom": "16.9.6",
-    "@types/sqlite3": "^3.1.6",
-    "cors": "^2.8.5",
-    "express": "4.17.1",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "sqlite3": "^4.1.1",
-    "ts-node": "8.8.2",
-    "ts-node-dev": "1.0.0-pre.44",
-    "ws": "^7.2.3"
+    "lerna": "^3.20.2"
   }
 }

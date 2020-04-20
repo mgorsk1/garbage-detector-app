@@ -46,7 +46,7 @@ const WsText = styled.span`
 
 const App = () => {
   const [connect, setConnect] = useState(false);
-  const ws = new WebSocket("ws://localhost:8080/subscribe");
+  const ws = new WebSocket("ws://localhost:9000/subscribe");
 
   ws.onopen = () => {
     setTimeout(() => {
@@ -58,7 +58,7 @@ const App = () => {
     setConnect(false);
   };
 
-  ws.onmessage = (e) => console.log(e);
+  ws.onmessage = (e) => console.log(`Received message from api: ${e.data}`);
 
   return (
     <Container>

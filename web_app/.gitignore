@@ -1,3 +1,5 @@
 node_modules
 /web_app.iml
 /.idea/
+.cache
+dist
