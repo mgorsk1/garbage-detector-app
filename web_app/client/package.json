@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run copy && parcel index.html",
-    "copy": "cp -rf ./static ./dist/static"
+    "start": "npm run clean && npm run copy && parcel index.html",
+    "copy": "cp -r ./static ./dist",
+    "clean": "rm -rf ./dist"
   },
   "author": "",
   "license": "ISC",

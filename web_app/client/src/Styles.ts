@@ -3,7 +3,6 @@ import styled, { createGlobalStyle } from "styled-components";
 import { CATEGORIES } from "./constants/categories";
 
 export const Styles = createGlobalStyle`
-  
   *,
   *:before,
   *:after {
@@ -20,7 +19,6 @@ export const Styles = createGlobalStyle`
     margin: 0;
   }
 `;
-
 
 export const Wrapper = styled.div`
   display: flex;
@@ -81,7 +79,7 @@ export const Logo = styled.div`
 `;
 
 export const LogoIcon = styled.div`
-  background: url("./static/logo.png");
+  background: url("./logo.png");
   width: 50px;
   height: 50px;
   background-size: contain;
