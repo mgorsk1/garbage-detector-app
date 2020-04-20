@@ -1,6 +1,6 @@
 
 import styled, { createGlobalStyle } from "styled-components";
-import { CATEGORIES } from "./constants/categories";
+import { CATEGORIES } from "./constants";
 
 export const Styles = createGlobalStyle`
   *,
@@ -27,6 +27,10 @@ export const Wrapper = styled.div`
   justify-content: center;
   padding: 50px;
   width: 100%;
+
+  > * {
+    width: 50% !important;
+  }
 `;
 
 export const Picture = styled.div`

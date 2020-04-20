@@ -39,6 +39,14 @@ const Menu = () => (
         <Detect />
         <span>Analyse</span>
       </MenuItem>
+      <MenuItem>
+        <Detect />
+        <span>Learn</span>
+      </MenuItem>
+      <MenuItem>
+        <Detect />
+        <span>How</span>
+      </MenuItem>
     </MenuItems>
   </Aside>
 );

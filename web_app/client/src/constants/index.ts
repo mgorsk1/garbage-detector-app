@@ -1,7 +1,8 @@
 const yellow = "#F9DEC9";
-const red = "#E9AFA3";
-const blue = "#AEC5EB";
-const navy = "#3A405A";
+export const red = "#E9AFA3";
+export const blue = "#AEC5EB";
+export const navy = "#3A405A";
+export const green = "#94F098";
 
 export const CATEGORIES = {
   0: {
