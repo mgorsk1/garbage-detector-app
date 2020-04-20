@@ -1,0 +1,23 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run copy && parcel index.html",
+    "copy": "cp -rf ./static ./dist/static"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "styled-components": "5.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.34",
+    "@types/styled-components": "5.1.0",
+    "parcel": "1.12.4",
+    "typescript": "3.8.3"
+  }
+}
