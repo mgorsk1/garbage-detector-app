@@ -35,7 +35,7 @@ export const emptyTimeStats = (dateFrom: string): TimeStatistics => {
   do {
     stats.push({ date: date.format('YYYY-MM-DD'), day: days[date.day()], ...emptyStats });
     date = date.add(1, 'days');
-  } while (date < currentDate);
+  } while (date <= currentDate);
 
   return stats;
 };
