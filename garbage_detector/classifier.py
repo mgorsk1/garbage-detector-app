@@ -81,7 +81,7 @@ class GarbageClassifier:
         # Write processed image back to disk
         generated_image_name = f'hopefully_{classification}_{int(time.time())}.jpg'
         processed_image_location = f'/tmp/{generated_image_name}'
-        cv2.imwrite(processed_image_location, image_processed)
+        cv2.imwrite(processed_image_location, image)
 
         img_url = self._upload_image_to_gcp(image_location=processed_image_location, image_name=generated_image_name)
 
