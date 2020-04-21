@@ -1,4 +1,5 @@
 import logging
+import random
 
 import requests
 
@@ -9,7 +10,7 @@ class GarbageClassifier:
         pass
 
     def _classify(self, image):
-        result = 'plastic'
+        result = random.choice['glass', 'plastic', 'paper', 'rest']
 
         logging.info(f'Image classified as: {result}')
         return result
