@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Page } from "../App.styles";
-import { emptyStats, emptyTimeStats } from '../constants/model';
-import styled from 'styled-components';
-import SummaryBarChart from '../components/SummaryBarChart';
-import WeekBarChart from '../components/WeekBarChart';
+import { emptyStats, emptyTimeStats } from "../constants/model";
+import styled from "styled-components";
+import SummaryBarChart from "../components/SummaryBarChart";
+import WeekBarChart from "../components/WeekBarChart";
 import HomeButton from "../components/HomeButton";
 import Home from "../icons/Home";
 
 const Content = styled.div`
+  margin: 50px 0;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  height: calc(100% - 160px)
+  height: 500px;
+  z-index: 1;
 `;
 
 const LeftPane = styled.div`
+  height: calc(50% - 0px);
   width: 30%;
-  height: 50%;
   padding: 20px;
 `;
-
+  
 const RightPane = styled.div`
   width: 70%;
-  height: 100%;
+  height: calc(100% - 0px);
 `;
-
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(emptyStats);
   const [timeStats, setTimeStats] = useState(emptyTimeStats);
 
   useEffect(() => {
-    fetch('http://localhost:9000/statistics').then(res => res.json()).then(stats => setStats(stats));
-    fetch('http://localhost:9000/time-statistics').then(res => res.json()).then(stats => setTimeStats(stats));
+    fetch("http://localhost:9000/statistics")
+      .then((res) => res.json())
+      .then((stats) => setStats(stats));
+    fetch("http://localhost:9000/time-statistics")
+      .then((res) => res.json())
+      .then((stats) => setTimeStats(stats));
   }, []);
 
   return (
@@ -45,7 +50,7 @@ const AnalyticsPage = () => {
           <WeekBarChart data={timeStats} />
         </RightPane>
       </Content>
-      <HomeButton to="/" text="Home" icon={<Home/>}/>
+      <HomeButton to="/" text="Home" icon={<Home />} />
     </Page>
   );
 };

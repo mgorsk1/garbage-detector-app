@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar'
 import { Statistics } from '../constants/model';
-import { blue, green, navy, red, yellow } from '../constants';
+import { colors } from '../App.styles';
 
 interface Props {
   data: Statistics;
@@ -10,13 +10,13 @@ interface Props {
 const getColor = (category: string): string => {
   switch(category) {
     case 'Paper':
-      return 'yellow';
+      return colors.yellow;
     case 'Glass':
-      return blue;
+      return colors.blue;
     case 'Plastic':
-      return red;
+      return colors.red;
     case 'Non recyclable':
-      return green;
+      return colors.green;
   }
   return '';
 };

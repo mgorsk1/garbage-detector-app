@@ -22,7 +22,7 @@ export const Container = styled.div<{ on: string }>`
   width: 100vw;
   min-height: 100vh;
   transition: background 500ms ease-in-out;
-  
+
   &:before {
     display: block;
     content: " ";
@@ -35,8 +35,8 @@ export const Container = styled.div<{ on: string }>`
     background-image: url("https://cdn.dribbble.com/users/1803663/screenshots/6080532/kerala_paddy_field.png");
     background-size: cover;
     transition: all 500ms ease-in-out;
-    opacity: ${props => props.on ? 0 : 1 };
-    filter: blur(${props => props.on ? '80px' : 0});
+    opacity: ${props => props.on && props.color ? 0 : 1 };
+    filter: blur(${props => props.on && props.color ? '80px' : 0});
   }
 `;
 
