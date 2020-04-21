@@ -59,6 +59,14 @@ class GarbageClassifier:
         return image
 
     def classify(self, image):
+        """
+        Classifies an image and notifies the backend of this. Process:
+            1. Call GCP to classify the image
+            2. Upload the image to GCP Bucket
+            3. Notifying the backend
+        :param image: Image opened with OpenCV (cv2)
+        :return:
+        """
         logging.info('Starting classify process')
 
         image_processed = self._prepare_image_for_model(image)
