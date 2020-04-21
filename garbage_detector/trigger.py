@@ -60,11 +60,11 @@ class DistanceSensorTrigger(TriggerWithLedNotification):
         logging.info(f'Distance from object: {distance} [cm]')
 
         if distance > self.range[1]:
-            logging.info('Object too far away')
+            logging.debug('Object too far away')
         elif distance < self.range[0]:
-            logging.info('Object too close')
+            logging.debug('Object too close')
         else:
-            logging.info('Object in range')
+            logging.debug('Object in range')
             check = True
 
         return check

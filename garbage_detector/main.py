@@ -56,11 +56,11 @@ if __name__ == '__main__':
             if start is None:
                 start = datetime.now()
 
-            in_range_for = (datetime.now() - start).total_seconds()
-            logging.info(f'In range for {in_range_for}')
-            if in_range_for > int(config.trigger.delay):
-                print(in_range_for)
+            in_range_for = round((datetime.now() - start).total_seconds(), 2)
 
+            logging.info(f'In range for: {in_range_for} s.')
+
+            if in_range_for > int(config.trigger.delay):
                 classify(classifier, image)
 
                 start = None
@@ -68,7 +68,7 @@ if __name__ == '__main__':
             start = None
 
         # @TODO delete before going live
-        cv2.imshow('Frame', image)
+        # cv2.imshow('Frame', image)
 
         key = cv2.waitKey(1) & 0xFF
 
