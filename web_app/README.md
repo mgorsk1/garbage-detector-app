@@ -3,11 +3,11 @@ Garbage collector Web app
 
 Building
 --------
-`docker build -t garbage-collector-web-app`
+`make build`
 
 Running
 -------
-`docker run -p 3000:3000 -p 9000:9000 garbage-collector-web-app -n garbage-collector-web-app`
+`make run`
 
 Browser client
 --------------
