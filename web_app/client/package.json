@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nivo/bar": "^0.61.1",
     "@types/react-router-dom": "5.1.4",
     "react": "^16.13.1",
     "react-dom": "16.13.1",

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export type GarbageClass = 'paper' | 'plastic' | 'glass' | 'rest';
 
 export interface Message {
@@ -17,18 +19,24 @@ export const emptyStats: Statistics = {
   rest: 0
 };
 
-export interface DayStatistics {
+export interface DayStatistics extends Statistics {
   date: string;
-  points: number;
+  day: string;
 }
 
-export type TimeStatistics = {
-  [garbageClass in GarbageClass]: DayStatistics[];
-}
+export type TimeStatistics = DayStatistics[];
 
-export const emptyTimeStats: TimeStatistics = {
-  glass: [],
-  paper: [],
-  plastic: [],
-  rest: [],
+const days = ['Sun', 'Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat'];
+
+export const emptyTimeStats = (dateFrom: string): TimeStatistics => {
+  const currentDate = moment();
+  let date = moment(dateFrom, 'YYYY-MM-DD');
+  let stats: DayStatistics[] = [];
+  do {
+    stats.push({ date: date.format('YYYY-MM-DD'), day: days[date.day()], ...emptyStats });
+    date = date.add(1, 'days');
+  } while (date < currentDate);
+
+  return stats;
 };
+

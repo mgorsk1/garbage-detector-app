@@ -68,7 +68,7 @@ app.get('/statistics', (req, res) => {
 
 app.get('/time-statistics', (req, res) => {
   const dateFrom = req.query.dateFrom as string | undefined ||
-    moment().subtract(7, 'days').format('YYYY-MM-DD');
+    moment().subtract(6, 'days').format('YYYY-MM-DD');
   getTimeStatistics(db, dateFrom, (stats: TimeStatistics) => {
     res.json(stats);
   });

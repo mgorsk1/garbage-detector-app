@@ -35,15 +35,19 @@ export function getStatistics(db: Database, dateFrom: string, callback: (stats: 
 }
 
 export function getTimeStatistics(db: Database, dateFrom: string, callback: (series: TimeStatistics) => void) {
-  let query = 'SELECT class, date(time) as dt, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY class, dt ORDER BY class, dt';
+  let query = 'SELECT date(time) as dt, class, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY dt, class ORDER BY dt, class';
 
   db.all(query, [dateFrom], (err, rows) => {
     if (err) {
       console.error(`Failed to query time statistics: ${err.message}`);
     }
-    let stats: TimeStatistics = { ...emptyTimeStats };
+    let stats: TimeStatistics = emptyTimeStats(dateFrom);
+    let index: number = 0;
     rows.forEach(row => {
-      stats[row.class as GarbageClass].push({ date: row.dt, points: row.points });
+      while(stats[index].date !== row.dt) {
+        index += 1;
+      }
+      stats[index][row.class as GarbageClass] = row.points;
     });
     callback(stats);
   });
