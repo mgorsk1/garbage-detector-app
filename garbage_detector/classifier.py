@@ -76,3 +76,5 @@ class GarbageClassifier:
         img_url = self._upload_image_to_gcp(image, classification)
 
         self._notify_backend('Mariusz', classification, img_url)
+
+        return classification
