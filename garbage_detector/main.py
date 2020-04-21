@@ -18,8 +18,8 @@ from garbage_detector.utils.spinner import LEDBoardSpinnerWithConfirmation
 LED_MAPPING = dict(
     paper=config.leds.blue,
     glass=config.leds.green,
-    metal=config.leds.yellow,
-    trash=config.leds.red,
+    plastic=config.leds.yellow,
+    rest=config.leds.red,
 )
 
 trigger: Any
