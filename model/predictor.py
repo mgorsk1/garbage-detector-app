@@ -1,5 +1,4 @@
-import os 
-
+import cv2
 import numpy as np
 import tensorflow as tf
 
@@ -20,7 +19,7 @@ class GarbageNet:
         prediction = prediction_probabilities.argmax(axis=1)
         prediction = [self.classes[p] for p in prediction]
         return prediction
-    
+
     def get_preprocessor(self):
         return tf.keras.applications.resnet50.preprocess_input
 
@@ -31,14 +30,26 @@ class GarbageNet:
         return tf.keras.models.load_model(self.path_model)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     model = GarbageNet('saved_model/model0.h5')
 
-    path_image1 = 'data/train/cardboard/cardboard1.jpg'
-    path_image2 = 'data/train/glass/glass1.jpg'
+    path_image = './data/test_middle_no_crop3.jpg'
 
-    image = tf.keras.preprocessing.image.load_img(path_image2, target_size=(224, 224))
-    image = tf.keras.preprocessing.image.img_to_array(image)
+    resize_to = (800, 600)
+    crop_to = (250, 250)
+
+    up, down = int((resize_to[1]/2)-(crop_to[1]/2)), int((resize_to[1]/2)+(crop_to[1]/2))
+    left, right = int((resize_to[0]/2)-(crop_to[0]/2)), int((resize_to[0]/2)+(crop_to[0]/2))
+
+    image = cv2.imread(path_image)
+    image = cv2.flip(image, 0)
+    image = cv2.resize(image, (800, 600))
+    image = image[up:down, left:right]
+
+    # cv2.imshow("image", image)
+    # cv2.waitKey(0)
+
+    image = cv2.resize(image, (224, 224))
     image = np.expand_dims(image, axis=0)
 
     label = model.predict(image)
