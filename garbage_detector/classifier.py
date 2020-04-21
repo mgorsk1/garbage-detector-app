@@ -1,7 +1,8 @@
 import logging
 import random
-
+import cv2
 import requests
+from garbage_detector.utils import gcp
 
 
 # @TODO develop this
@@ -10,16 +11,20 @@ class GarbageClassifier:
         pass
 
     def _classify(self, image):
-        result = random.choice['glass', 'plastic', 'paper', 'rest']
+        result = random.choice(['glass', 'plastic', 'paper', 'rest'])
 
         logging.info(f'Image classified as: {result}')
         return result
 
-    def _upload_image_to_gcp(self, image):
-        result = 'https://storage.googleapis.com/garbage-detector-classifications/20200419_100642%20(1).jpg'
+    def _upload_image_to_gcp(self, image_location):
+        blob_name = image_location.split('/')[-1]
 
-        logging.info(f'Image uploaded to GCP as: {result}')
-        return result
+        gcp.upload_blob(bucket_name="garbage-detector-classifications",
+                        source_file_name=image_location,
+                        destination_blob_name=blob_name)
+
+        logging.info(f'Image uploaded to GCP as: {blob_name}')
+        return blob_name
 
     def _notify_backend(self, user, category, image):
         json_payload = {'user': user, 'class': category, 'image': image}
@@ -29,16 +34,19 @@ class GarbageClassifier:
         logging.info(f'Backend notified with response: {r}')
         return r
 
-    def _prepare_image_for_model(self, image):
-        return image
+    def classify(self, image_location):
+        """
+        Classifies the image by calling GCP and notifying the backend.
 
-    def classify(self, image):
+        :param image_location: Full path to the file
+        :return:
+        """
         logging.info('Starting classify process')
 
-        image = self._prepare_image_for_model(image)
+        image = cv2.imread(image_location)
 
         classification = self._classify(image)
 
-        photo_url = self._upload_image_to_gcp(image)
+        photo_url = self._upload_image_to_gcp(image_location=image_location)
 
         self._notify_backend('Mariusz', classification, photo_url)
