@@ -1,6 +1,7 @@
 import logging
 import random
 import cv2
+import numpy as np
 import requests
 from garbage_detector.utils.gcp import GCP
 
@@ -54,6 +55,24 @@ class GarbageClassifier:
         logging.info(f'Backend notified with response: {r}')
         return r
 
+    def _prepare_image_for_model(self, image):
+        resize_to = (800, 600)
+        crop_to = (250, 250)
+
+        up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
+        left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
+
+        image = cv2.flip(image, 0)
+        image = cv2.resize(image, (800, 600))
+
+        image = image[up:down, left:right]
+
+        image = cv2.resize(image, (224, 224))
+
+        image = np.expand_dims(image, axis=0)
+
+        return image
+
     def classify(self, image_location):
         """
         Classifies an image and notifies the backend of this. Process:
@@ -67,8 +86,9 @@ class GarbageClassifier:
         logging.info('Starting classify process')
 
         image = cv2.imread(image_location)
+        image_processed = self._prepare_image_for_model(image)
 
-        classification = self._classify(image)
+        classification = self._classify(image_processed)
 
         img_name = self._upload_image_to_gcp(image_location=image_location)
         img_url = f"https://storage.cloud.google.com/{BUCKET_NAME}/{img_name}"
