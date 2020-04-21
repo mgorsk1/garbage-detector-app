@@ -44,21 +44,20 @@ class GarbageClassifier:
         return r
 
     def _prepare_image_for_model(self, image):
-        # @TODO Fix
-        # resize_to = (800, 600)
-        # crop_to = (250, 250)
-        #
-        # up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
-        # left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
-        #
-        # image = cv2.flip(image, 0)
-        # image = cv2.resize(image, (800, 600))
-        #
-        # image = image[up:down, left:right]
-        #
-        # image = cv2.resize(image, (224, 224))
-        #
-        # image = np.expand_dims(image, axis=0)
+        resize_to = (800, 600)
+        crop_to = (250, 250)
+
+        up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
+        left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
+
+        image = cv2.flip(image, 0)
+        image = cv2.resize(image, (800, 600))
+
+        image = image[up:down, left:right]
+
+        image = cv2.resize(image, (224, 224))
+
+        image = np.expand_dims(image, axis=0)
 
         return image
 
