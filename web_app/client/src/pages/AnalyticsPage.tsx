@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Page } from "../App.styles";
 import { emptyProgressStats, emptyStats, emptyTimeStats } from "../constants/model";
 import styled from "styled-components";
-import SummaryBarChart from "../components/SummaryBarChart";
 import WeekBarChart from "../components/WeekBarChart";
 import HomeButton from "../components/HomeButton";
 import Home from "../icons/Home";
