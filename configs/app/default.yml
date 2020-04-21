@@ -8,8 +8,8 @@ trigger:
   parameters:
     echo: ${TRIGGER_PARAMETERS_ECHO:-20}
     trigger: ${TRIGGER_PARAMETERS_TRIGGER:-26}
-    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-30}
-    distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-50}
+    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-45}
+    distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-65}
     led: ${TRIGGER_PARAMETERS_LED:-24}
   delay: ${TRIGGER_DELAY:-3}
 leds:
