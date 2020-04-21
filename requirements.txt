@@ -8,3 +8,4 @@ pigpio==1.46
 piny==0.6.0
 requests==2.23.0
 RPi.GPIO==0.7.0
+google-cloud-storage==1.27.0
