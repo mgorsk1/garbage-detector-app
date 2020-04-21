@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import WebSocket from 'ws';
-import {CollectionEvent, Message} from './types';
-import {ExtWebSocket} from './extWebSocket';
-import {getStatistics, getTimeSeries, insertMessage, openDatabase} from './database';
+import { CollectionEvent, Message } from './types';
+import { ExtWebSocket } from './extWebSocket';
+import { getStatistics, getTimeSeries, insertMessage, openDatabase } from './database';
 
 const app = express();
 app.use(cors());
@@ -45,8 +45,8 @@ const broadcastMessage = (msg: Message) => {
   console.log(`Notifying ${wss.clients.size} clients`);
   wss.clients
     .forEach(client => {
-    client.send(JSON.stringify(msg));
-  });
+      client.send(JSON.stringify(msg));
+    });
 };
 
 app.post('/collections', (req, res) => {

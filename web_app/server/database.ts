@@ -1,5 +1,5 @@
-import sqlite3, {Database} from 'sqlite3';
-import {CollectionEvent, emptyUserStats, Message, Statistics} from './types';
+import sqlite3, { Database } from 'sqlite3';
+import { CollectionEvent, emptyUserStats, Message, Statistics } from './types';
 
 export function openDatabase(): Database {
   const db = new sqlite3.Database(':memory:');
