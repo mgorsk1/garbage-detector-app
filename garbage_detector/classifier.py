@@ -3,6 +3,7 @@ import random
 import cv2
 import numpy as np
 import requests
+import time
 from garbage_detector.utils.gcp import GCP
 
 
@@ -24,26 +25,13 @@ class GarbageClassifier:
         logging.info(f'Image classified as: {result}')
         return result
 
-    def _upload_image_to_gcp(self, image_location):
-        original_blob_name = image_location.split('/')[-1]
-        blob_name_prefix = original_blob_name.rsplit('.', 1)[0]
-        blob_extension = original_blob_name.rsplit('.', 1)[-1]
-        blob_name_postfix = ''
-
-        blob_name = f"{blob_name_prefix}{blob_name_postfix}.{blob_extension}"
-        while self.gcp.blob_exists(blob_name):
-            if blob_name_postfix == '':
-                blob_name_postfix = 1
-            else:
-                blob_name_postfix += 1
-
-            blob_name = f"{blob_name_prefix}{blob_name_postfix}.{blob_extension}"
-
+    def _upload_image_to_gcp(self, image_location, image_name):
         self.gcp.upload_blob(source_file_name=image_location,
-                             destination_blob_name=blob_name)
+                             destination_blob_name=image_name)
 
-        logging.info(f'Image uploaded to GCP as: {blob_name}')
-        return blob_name
+        logging.info(f'Image uploaded to GCP as: {image_name}')
+
+        return f"https://storage.cloud.google.com/{BUCKET_NAME}/{image_name}"
 
     def _notify_backend(self, user, category, image):
         json_payload = {'user': user, 'class': category, 'image': image}
@@ -56,42 +44,46 @@ class GarbageClassifier:
         return r
 
     def _prepare_image_for_model(self, image):
-        resize_to = (800, 600)
-        crop_to = (250, 250)
-
-        up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
-        left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
-
-        image = cv2.flip(image, 0)
-        image = cv2.resize(image, (800, 600))
-
-        image = image[up:down, left:right]
-
-        image = cv2.resize(image, (224, 224))
-
-        image = np.expand_dims(image, axis=0)
+        # @TODO Fix
+        # resize_to = (800, 600)
+        # crop_to = (250, 250)
+        #
+        # up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
+        # left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
+        #
+        # image = cv2.flip(image, 0)
+        # image = cv2.resize(image, (800, 600))
+        #
+        # image = image[up:down, left:right]
+        #
+        # image = cv2.resize(image, (224, 224))
+        #
+        # image = np.expand_dims(image, axis=0)
 
         return image
 
-    def classify(self, image_location):
+    def classify(self, image):
         """
         Classifies an image and notifies the backend of this. Process:
             1. Call GCP to classify the image
             2. Upload the image to GCP Bucket
             3. Notifying the backend
 
-        :param image_location: Full path to the file
+        :param image: Image opened with OpenCV (cv2)
         :return:
         """
         logging.info('Starting classify process')
 
-        image = cv2.imread(image_location)
+        # process the image and classify
         image_processed = self._prepare_image_for_model(image)
-
         classification = self._classify(image_processed)
 
-        img_name = self._upload_image_to_gcp(image_location=image_location)
-        img_url = f"https://storage.cloud.google.com/{BUCKET_NAME}/{img_name}"
+        # Write processed image back to disk
+        generated_image_name = f'hopefully_{classification}_{int(time.time())}.jpg'
+        processed_image_location = f'/tmp/{generated_image_name}'
+        cv2.imwrite(processed_image_location, image_processed)
+
+        img_url = self._upload_image_to_gcp(image_location=processed_image_location, image_name=generated_image_name)
 
         self._notify_backend(user='Mariusz',
                              category=classification,
