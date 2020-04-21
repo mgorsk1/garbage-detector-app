@@ -1,11 +1,11 @@
 import sqlite3, { Database } from 'sqlite3';
 import {
   CollectionDay,
-  DayStatistics,
+  DayStatistics, emptyProgressStats,
   emptyStats,
   emptyTimeStats,
   GarbageClass,
-  Message,
+  Message, ProgressStatistics,
   Statistics,
   TimeStatistics
 } from './types';
@@ -86,5 +86,34 @@ export function getTimeStatistics(db: Database, dateFrom: string, callback: (ser
       stats[index][row.class as GarbageClass] = row.points;
     });
     callback(stats);
+  });
+}
+
+export function getProgress(db: Database, dateFrom: string, callback: (series: ProgressStatistics) => void) {
+  let initialQuery = 'SELECT count(*) as points FROM collections WHERE date(time) < date(?)';
+
+  db.all(initialQuery, [dateFrom], (err, rows) => {
+    if (err) {
+      console.error(`Failed to query progress statistics: ${err.message}`);
+    }
+    let count = rows[0].points;
+
+    let query = 'SELECT date(time) as dt, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY dt ORDER BY dt';
+
+    db.all(query, [dateFrom], (err, rows) => {
+      if (err) {
+        console.error(`Failed to query time statistics: ${err.message}`);
+      }
+      let stats: ProgressStatistics = emptyProgressStats(dateFrom);
+      let index: number = 0;
+      rows.forEach(row => {
+        while(stats[index].date !== row.dt) {
+          index += 1;
+        }
+        count = count + row.points;
+        stats[index].points = count;
+      });
+      callback(stats);
+    });
   });
 }

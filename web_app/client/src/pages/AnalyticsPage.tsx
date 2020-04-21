@@ -1,35 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { Page } from "../App.styles";
-import { emptyStats, emptyTimeStats } from "../constants/model";
+import { emptyProgressStats, emptyStats, emptyTimeStats } from "../constants/model";
 import styled from "styled-components";
 import SummaryBarChart from "../components/SummaryBarChart";
 import WeekBarChart from "../components/WeekBarChart";
 import HomeButton from "../components/HomeButton";
 import Home from "../icons/Home";
+import SummaryPieChart from '../components/SummaryPieChart';
+import ProgressLineChart from '../components/ProgressLineChart';
 
 const Content = styled.div`
   margin: 50px 0;
+  padding: 20px;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  height: 500px;
+  align-items: center;
+  height: 600px;
   z-index: 1;
+  border-radius: 12px;
+  &&&& {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const LeftPane = styled.div`
-  height: calc(50% - 0px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 30%;
-  padding: 20px;
 `;
-  
+
+const ChartContainer = styled.div`
+  height: 50%;
+  width: 100%;
+`;
+
 const RightPane = styled.div`
   width: 70%;
-  height: calc(100% - 0px);
+  height: 100%
 `;
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(emptyStats);
   const [timeStats, setTimeStats] = useState(emptyTimeStats);
+  const [progressStats, setProgressStats] = useState(emptyProgressStats);
 
   useEffect(() => {
     fetch("http://localhost:9000/statistics")
@@ -38,13 +52,21 @@ const AnalyticsPage = () => {
     fetch("http://localhost:9000/time-statistics")
       .then((res) => res.json())
       .then((stats) => setTimeStats(stats));
+    fetch("http://localhost:9000/progress")
+      .then((res) => res.json())
+      .then((stats) => setProgressStats(stats));
   }, []);
 
   return (
     <Page>
       <Content>
         <LeftPane>
-          <SummaryBarChart data={stats} />
+          <ChartContainer>
+            <ProgressLineChart data={progressStats}/>
+          </ChartContainer>
+          <ChartContainer>
+            <SummaryPieChart data={stats} />
+          </ChartContainer>
         </LeftPane>
         <RightPane>
           <WeekBarChart data={timeStats} />

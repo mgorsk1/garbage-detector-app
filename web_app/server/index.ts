@@ -3,9 +3,9 @@ import cors from 'cors';
 import http from 'http';
 import bodyParser from 'body-parser';
 import WebSocket from 'ws';
-import { Message, TimeStatistics } from './types';
+import { Message, ProgressStatistics, TimeStatistics } from './types';
 import { ExtWebSocket } from './extWebSocket';
-import { getStatistics, getTimeStatistics, insertMessage, openDatabase } from './database';
+import { getProgress, getStatistics, getTimeStatistics, insertMessage, openDatabase } from './database';
 import moment from 'moment';
 
 const app = express();
@@ -71,6 +71,14 @@ app.get('/time-statistics', (req, res) => {
   const dateFrom = req.query.dateFrom as string | undefined ||
     moment().subtract(6, 'days').format('YYYY-MM-DD');
   getTimeStatistics(db, dateFrom, (stats: TimeStatistics) => {
+    res.json(stats);
+  });
+});
+
+app.get('/progress', (req, res) => {
+  const dateFrom = req.query.dateFrom as string | undefined ||
+    moment().subtract(6, 'days').format('YYYY-MM-DD');
+  getProgress(db, dateFrom, (stats: ProgressStatistics) => {
     res.json(stats);
   });
 });

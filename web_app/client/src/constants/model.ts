@@ -25,3 +25,13 @@ export interface DayStatistics extends Statistics {
 export type TimeStatistics = DayStatistics[];
 
 export const emptyTimeStats: TimeStatistics = [];
+
+export interface DayProgress {
+  date: string;
+  day: string;
+  points: number;
+}
+
+export type ProgressStatistics = DayProgress[];
+
+export const emptyProgressStats: ProgressStatistics = [];

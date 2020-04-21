@@ -40,3 +40,22 @@ export const emptyTimeStats = (dateFrom: string): TimeStatistics => {
   return stats;
 };
 
+export interface DayProgress {
+  date: string;
+  day: string;
+  points: number;
+}
+
+export type ProgressStatistics = DayProgress[];
+
+export const emptyProgressStats = (dateFrom: string): ProgressStatistics => {
+  const currentDate = moment();
+  let date = moment(dateFrom, 'YYYY-MM-DD');
+  let stats: DayProgress[] = [];
+  do {
+    stats.push({ date: date.format('YYYY-MM-DD'), day: days[date.day()], points: 0 });
+    date = date.add(1, 'days');
+  } while (date <= currentDate);
+
+  return stats;
+};
