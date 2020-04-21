@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
+import bodyParser from 'body-parser';
 import WebSocket from 'ws';
 import {CollectionEvent, Message} from './types';
 import {ExtWebSocket} from './extWebSocket';
@@ -9,6 +10,7 @@ import {getStatistics, getTimeSeries, insertMessage, openDatabase} from './datab
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json())
 const port = 9000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/subscribe' });
@@ -51,7 +53,6 @@ const broadcastMessage = (msg: Message) => {
 
 app.post('/collections', (req, res) => {
   const msg: Message = req.body;
-  console.log(`Received message from user '${msg.user}', identified class: '${msg.class}'`);
   insertMessage(db, msg, new Date().toISOString());
   broadcastMessage(req.body);
   res.send('Collected.')

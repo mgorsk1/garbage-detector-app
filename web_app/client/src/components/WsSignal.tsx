@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { green, red, navy, WsStatus } from "../constants";
+import { WsStatus } from "../constants";
+import { colors } from '../App.styles';
 
 const Container = styled.div`
   position: absolute;
   display block;
-  right: 30px;
-  top: 30px;
+  left: 50px;
+  bottom: 50px;
   font-family: Source Code Pro, monospace;
   display: flex;
   font-size: 12px;
-  line-height: 12px;
   align-items: center;
 `;
 
@@ -22,7 +22,7 @@ const Icon = styled.div<{ status: WsStatus }>`
 `;
 
 const Text = styled.span`
-  margin-right: 12px;
+  margin-left: 12px;
 `;
 
 type Props = {
@@ -30,23 +30,23 @@ type Props = {
 };
 
 const StatusColor = {
-  [WsStatus.Connecting]: "connecting",
-  [WsStatus.Connected]: green,
-  [WsStatus.Error]: red,
-  [WsStatus.Closed]: navy,
+  [WsStatus.Connecting]: colors.yellow,
+  [WsStatus.Connected]: colors.green,
+  [WsStatus.Error]: colors.red,
+  [WsStatus.Closed]: colors.red,
 };
 
 const StatusText = {
-  [WsStatus.Connecting]: "connecting to api",
-  [WsStatus.Connected]: "connected to api",
+  [WsStatus.Connecting]: "connecting",
+  [WsStatus.Connected]: "connected",
   [WsStatus.Error]: "error",
-  [WsStatus.Closed]: "closed connection",
+  [WsStatus.Closed]: "closed",
 };
 
 const WsSignal = ({ status }: Props) => (
   <Container>
-    <Text>{StatusText[status]}</Text>
     <Icon status={status}></Icon>
+    <Text>{StatusText[status]}</Text>
   </Container>
 );
 
