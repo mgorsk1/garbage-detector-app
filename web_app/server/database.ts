@@ -1,5 +1,5 @@
 import sqlite3, { Database } from 'sqlite3';
-import { CollectionEvent, emptyUserStats, Message, Statistics } from './types';
+import { CollectionDay, emptyStats, emptyTimeStats, GarbageClass, Message, Statistics, TimeStatistics } from './types';
 
 export function openDatabase(): Database {
   const db = new sqlite3.Database(':memory:');
@@ -21,44 +21,30 @@ export function insertMessage(db: Database, msg: Message, time: string) {
     });
 }
 
-export function getStatistics(db: Database, callback: (stats: Statistics) => void) {
-  db.all('SELECT user, class, count(*) as count FROM collections GROUP BY user, class', (err, rows) => {
+export function getStatistics(db: Database, dateFrom: string, callback: (stats: Statistics) => void) {
+  db.all('SELECT class, count(*) as count FROM collections WHERE date(time) >= date(?) GROUP BY class', [dateFrom], (err, rows) => {
     if (err) {
       console.error(`Failed to query statistics: ${err.message}`);
     }
-    let stats: Statistics = {};
+    let stats: Statistics = emptyStats;
     rows.forEach(row => {
-      if (!stats[row.user]) {
-        stats[row.user] = emptyUserStats;
-      }
-      stats[row.user] = { ...stats[row.user], [row.class]: row.count };
+      stats = { ...stats, [row.class]: row.count };
     });
     callback(stats);
   });
 }
 
-export function getTimeSeries(db: Database, user: string, timeFrom?: string, timeTo?: string, callback: (series: CollectionEvent[]) => void) {
-  let query = 'SELECT user, class, time FROM collections WHERE user = ?';
-  let params = [user];
-  if (timeFrom) {
-    query = query + ' AND time >= ?';
-    params.push(timeFrom);
-  }
-  if (timeTo) {
-    query = query + ' AND time <= ?';
-    params.push(timeTo);
-  }
-  query = query + ' ORDER BY time';
+export function getTimeStatistics(db: Database, dateFrom: string, callback: (series: TimeStatistics) => void) {
+  let query = 'SELECT class, date(time) as dt, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY class, dt ORDER BY class, dt';
 
-  db.all(query, params, (err, rows) => {
+  db.all(query, [dateFrom], (err, rows) => {
     if (err) {
-      console.error(`Failed to query time series for user ${user}: ${err.message}`);
+      console.error(`Failed to query time statistics: ${err.message}`);
     }
-    const series: CollectionEvent[] = rows.map(row => ({
-      user: row.user,
-      class: row.class,
-      time: row.time,
-    }));
-    callback(series);
+    let stats: TimeStatistics = { ...emptyTimeStats };
+    rows.forEach(row => {
+      stats[row.class as GarbageClass].push({ date: row.dt, points: row.points });
+    });
+    callback(stats);
   });
 }

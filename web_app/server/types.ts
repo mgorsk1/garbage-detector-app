@@ -1,4 +1,4 @@
-type GarbageClass = 'paper' | 'plastic' | 'glass' | 'rest';
+export type GarbageClass = 'paper' | 'plastic' | 'glass' | 'rest';
 
 export interface Message {
   user: string;
@@ -7,22 +7,28 @@ export interface Message {
 }
 
 export type Statistics = {
-  [user: string]: UserStatistics;
-}
-
-export type UserStatistics = {
   [garbageClass in GarbageClass]: number;
 };
 
-export const emptyUserStats: UserStatistics = {
+export const emptyStats: Statistics = {
   glass: 0,
   paper: 0,
   plastic: 0,
   rest: 0
 };
 
-export interface CollectionEvent {
-  user: string;
-  class: GarbageClass;
-  time: string;
+export interface DayStatistics {
+  date: string;
+  points: number;
 }
+
+export type TimeStatistics = {
+  [garbageClass in GarbageClass]: DayStatistics[];
+}
+
+export const emptyTimeStats: TimeStatistics = {
+  glass: [],
+  paper: [],
+  plastic: [],
+  rest: [],
+};

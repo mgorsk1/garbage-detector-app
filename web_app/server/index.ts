@@ -2,9 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import WebSocket from 'ws';
-import { CollectionEvent, Message } from './types';
+import { Message, TimeStatistics } from './types';
 import { ExtWebSocket } from './extWebSocket';
-import { getStatistics, getTimeSeries, insertMessage, openDatabase } from './database';
+import { getStatistics, getTimeStatistics, insertMessage, openDatabase } from './database';
+import moment from 'moment';
 
 const app = express();
 app.use(cors());
@@ -58,21 +59,18 @@ app.post('/collections', (req, res) => {
 });
 
 app.get('/statistics', (req, res) => {
-  getStatistics(db, stats => {
+  const dateFrom = req.query.dateFrom as string | undefined ||
+    moment().subtract(7, 'days').format('YYYY-MM-DD');
+  getStatistics(db, dateFrom, stats => {
     res.json(stats);
   });
 });
 
-app.get('/time-series', (req, res) => {
-  if (!req.query.user) {
-    res.status(400).send('Missing \'user\' query parameter');
-    return;
-  }
-  const user = req.query.user as string;
-  const timeFrom = req.query.timeFrom as string | undefined;
-  const timeTo = req.query.timeTo as string | undefined;
-  getTimeSeries(db, user, timeFrom, timeTo, (series: CollectionEvent[]) => {
-    res.json(series);
+app.get('/time-statistics', (req, res) => {
+  const dateFrom = req.query.dateFrom as string | undefined ||
+    moment().subtract(7, 'days').format('YYYY-MM-DD');
+  getTimeStatistics(db, dateFrom, (stats: TimeStatistics) => {
+    res.json(stats);
   });
 });
 
