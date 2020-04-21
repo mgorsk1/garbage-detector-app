@@ -53,7 +53,7 @@ def turn_on_led(classification):
 
     led.on()
 
-    sleep(4)
+    sleep(3)
 
     led.off()
 
