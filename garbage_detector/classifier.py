@@ -40,7 +40,7 @@ class GarbageClassifier:
 
                 logging.info(f'Image classified as: {category}')
         else:
-            return 'trash'
+            return 'rest'
 
     def _get_best_pick(self, values):
         import operator
