@@ -31,7 +31,7 @@ class GarbageClassifier:
             body={'instances': [image]},
         ).execute()
 
-        predictions = list(response.get('predictions')[0][0].values())
+        predictions = list(response.get('predictions')[0][0])
 
         if 'error' in response:
             raise RuntimeError(response['error'])
