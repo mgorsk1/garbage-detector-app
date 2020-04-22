@@ -41,13 +41,11 @@ const ProgressLineChart = ({ data }: Props) => {
       top: 50,
       right: 20,
       bottom: 50,
-      left: 20
+      left: 40
     }}
     pointColor="white"
     pointBorderWidth={2}
     pointBorderColor={{ from: 'serieColor' }}
-    enableGridY={false}
-    axisLeft={null}
     pointLabel="y"
     pointLabelYOffset={-12}
   />

@@ -9,17 +9,16 @@ import SummaryPieChart from '../components/SummaryPieChart';
 import ProgressLineChart from '../components/ProgressLineChart';
 
 const Content = styled.div`
+  position: relative;
   margin: 50px 0;
-  padding: 20px;
+  height: 600px;
+  z-index: 1;
+  padding: 20px 20px 20px 30px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 600px;
-  z-index: 1;
-  border-radius: 12px;
-  &&&& {
-    background: rgba(255, 255, 255, 0.1);
-  }
 `;
 
 const LeftPane = styled.div`
