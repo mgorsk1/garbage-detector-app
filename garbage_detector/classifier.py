@@ -35,12 +35,12 @@ class GarbageClassifier:
         if result is not None:
             description, category, confidence = [result.get(x) for x in ['description', 'category', 'confidence']]
 
-            if confidence >= 65:
+            if confidence >= config.gcp.vision.classification.threshold:
                 return category
 
                 logging.info(f'Image classified as: {category}')
         else:
-            return None
+            return 'trash'
 
     def _get_best_pick(self, values):
         import operator
