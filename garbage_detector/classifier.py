@@ -23,17 +23,18 @@ class GarbageClassifier:
 
     def _classify(self, image):
         name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
-        #name += f'/versions/{int(config.gcp.model.version)}'
 
         response = self.ai.projects().predict(
             name=name,
             body={'instances': image},
         ).execute()
 
+        predictions = list(response.get('predictions')[0].values())
+
         if 'error' in response:
             raise RuntimeError(response['error'])
 
-        result = self.classes[response.index(max(response))]
+        result = self.classes[predictions.index(max(predictions))]
 
         logging.info(f'Image classified as: {result}')
         return result
