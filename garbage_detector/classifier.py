@@ -35,7 +35,7 @@ class GarbageClassifier:
         if result is not None:
             description, category, confidence = [result.get(x) for x in ['description', 'category', 'confidence']]
 
-            if confidence >= 50:
+            if confidence >= 65:
                 return category
 
                 logging.info(f'Image classified as: {category}')
