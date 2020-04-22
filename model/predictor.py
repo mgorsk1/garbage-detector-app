@@ -1,5 +1,9 @@
+import base64
+import json
+
 import cv2
 import numpy as np
+import requests
 import tensorflow as tf
 
 
@@ -33,25 +37,58 @@ class GarbageNet:
 if __name__ == '__main__':
     model = GarbageNet('saved_model/model0.h5')
 
-    path_image = './data/test_middle_no_crop3.jpg'
+    # path_image = './data/test_middle_crop_glass4.jpg'
+
+    photos = [
+        'test_closer_deo.jpg',
+        'test_closer.jpg',
+        'test_closer_pl.jpg',
+        'test_middle_crop_glass2.jpg',
+        'test_middle_crop_glass4.jpg',
+        'test_middle_crop_paper.jpg',
+        'test_middle_no_crop2.jpg',
+        'test_middle_no_crop.jpg',
+        'test_closer_glass.jpg',
+        'test_closer_paper.jpg',
+        'test_farther_crop.jpg',
+        'test_middle_crop_glass3.jpg',
+        'test_middle_crop_glass.jpg',
+        'test_middle_crop_plastic.jpg',
+        'test_middle_no_crop3.jpg',
+    ]
 
     resize_to = (800, 600)
     crop_to = (250, 250)
 
-    up, down = int((resize_to[1]/2)-(crop_to[1]/2)), int((resize_to[1]/2)+(crop_to[1]/2))
-    left, right = int((resize_to[0]/2)-(crop_to[0]/2)), int((resize_to[0]/2)+(crop_to[0]/2))
+    up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
+    left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
-    image = cv2.imread(path_image)
-    image = cv2.flip(image, 0)
-    image = cv2.resize(image, (800, 600))
-    image = image[up:down, left:right]
+    for path_image in photos:
+        path_image = f'./data/{path_image}'
 
-    # cv2.imshow("image", image)
-    # cv2.waitKey(0)
+        image = cv2.imread(path_image)
+        image = cv2.flip(image, 0)
+        image = cv2.resize(image, (800, 600))
+        image = image[up:down, left:right]
 
-    image = cv2.resize(image, (224, 224))
-    image = np.expand_dims(image, axis=0)
+        # cv2.imshow("image", image)
+        # cv2.waitKey(0)
 
-    label = model.predict(image)
+        image = cv2.resize(image, (224, 224))
+        image_expanded = np.expand_dims(image, axis=0)
 
-    print(label)
+        image = tf.keras.applications.resnet50.preprocess_input(image)
+
+        image = np.ascontiguousarray(image)
+
+        request = requests.post(
+            'http://localhost:8500/v1/models/gd:predict',
+            data=json.dumps(dict(instances=[image.tolist()])),
+        )
+
+        predictions = json.loads(request.content)['predictions'][0]
+        classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
+        predicted_class = classes[predictions.index(max(predictions))]
+        label = model.predict(image_expanded)
+
+        print(path_image, label, predicted_class)
