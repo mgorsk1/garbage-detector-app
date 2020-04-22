@@ -3,7 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import bodyParser from 'body-parser';
 import WebSocket from 'ws';
-import { Message, ProgressStatistics, TimeStatistics } from './types';
+import { GarbageCategory, IncomingMessage, ProgressStatistics, TimeStatistics } from './types';
 import { ExtWebSocket } from './extWebSocket';
 import { getProgress, getStatistics, getTimeStatistics, insertMessage, openDatabase } from './database';
 import moment from 'moment';
@@ -44,16 +44,20 @@ setInterval(() => {
 }, 10000);
 
 
-const broadcastMessage = (msg: Message) => {
+const broadcastMessage = (msg: IncomingMessage) => {
   console.log(`Notifying ${wss.clients.size} clients`);
+  const outgoingMessage = {
+    category: msg.category,
+    points: getPoints(msg.category),
+  };
   wss.clients
     .forEach(client => {
-      client.send(JSON.stringify(msg));
+      client.send(JSON.stringify(outgoingMessage));
     });
 };
 
 app.post('/collections', (req, res) => {
-  const msg: Message = req.body;
+  const msg: IncomingMessage = req.body;
   insertMessage(db, msg, new Date().toISOString());
   broadcastMessage(req.body);
   res.send('Collected.')
@@ -86,3 +90,22 @@ app.get('/progress', (req, res) => {
 server.listen(port, () => {
   console.log(`Garbage collection API started on port ${port}!`);
 });
+
+export function getPoints(category: GarbageCategory): number {
+  let points = 0;
+  switch(category) {
+    case 'paper':
+      points = 3;
+      break;
+    case 'plastic':
+      points = 10;
+      break;
+    case 'glass':
+      points = 5;
+      break;
+    case 'rest':
+      points = 1;
+      break;
+  }
+  return points;
+}

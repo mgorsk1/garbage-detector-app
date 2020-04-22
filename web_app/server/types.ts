@@ -1,15 +1,13 @@
 import moment from 'moment';
 
-export type GarbageClass = 'paper' | 'plastic' | 'glass' | 'rest';
+export type GarbageCategory = 'paper' | 'plastic' | 'glass' | 'rest';
 
-export interface Message {
-  user: string;
-  image: string;
-  class: GarbageClass;
+export interface IncomingMessage {
+  category: GarbageCategory;
 }
 
 export type Statistics = {
-  [garbageClass in GarbageClass]: number;
+  [garbageClass in GarbageCategory]: number;
 };
 
 export const emptyStats: Statistics = {

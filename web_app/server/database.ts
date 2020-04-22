@@ -1,19 +1,20 @@
 import sqlite3, { Database } from 'sqlite3';
 import {
-  CollectionDay,
-  DayStatistics, emptyProgressStats,
+  emptyProgressStats,
   emptyStats,
   emptyTimeStats,
-  GarbageClass,
-  Message, ProgressStatistics,
+  GarbageCategory,
+  IncomingMessage,
+  ProgressStatistics,
   Statistics,
   TimeStatistics
 } from './types';
 import moment from 'moment';
+import { getPoints } from './index';
 
 export function openDatabase(): Database {
   const db = new sqlite3.Database(':memory:');
-  db.run('CREATE TABLE IF NOT EXISTS collections(user text, class text, time text)', (err) => {
+  db.run('CREATE TABLE IF NOT EXISTS collections(user text, category text, points integer, time text)', (err) => {
     if (err) {
       console.error('Failed to open database!');
       process.exit(1);
@@ -27,29 +28,30 @@ function createSampleData(db: Database) {
   const currentDate = moment();
   let date = currentDate.clone().subtract(30, 'days');
   do {
-    const paper = Math.floor(Math.random() * 15);
-    const glass = Math.floor(Math.random() * 7);
-    const plastic = Math.floor(Math.random() * 15);
-    const rest = Math.floor(Math.random() * 30);
+    const paper = Math.floor(Math.random() * 5);
+    const glass = Math.floor(Math.random() * 2);
+    const plastic = Math.floor(Math.random() * 5);
+    const rest = Math.floor(Math.random() * 10);
     const time = date.toISOString();
     for (let i = 0; i < paper; i++) {
-      db.run('INSERT INTO collections(user, class, time) VALUES (?, ?, ?)', ['Staszek', 'paper', time]);
+      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'paper', 3, time]);
     }
     for (let i = 0; i < glass; i++) {
-      db.run('INSERT INTO collections(user, class, time) VALUES (?, ?, ?)', ['Staszek', 'glass', time]);
+      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'glass', 5, time]);
     }
     for (let i = 0; i < plastic; i++) {
-      db.run('INSERT INTO collections(user, class, time) VALUES (?, ?, ?)', ['Staszek', 'plastic', time]);
+      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'plastic', 10, time]);
     }
     for (let i = 0; i < rest; i++) {
-      db.run('INSERT INTO collections(user, class, time) VALUES (?, ?, ?)', ['Staszek', 'rest', time]);
+      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'rest', 1, time]);
     }
     date = date.add(1, 'days');
   } while (date <= currentDate);
 }
 
-export function insertMessage(db: Database, msg: Message, time: string) {
-  db.run('INSERT INTO collections(user, class, time) VALUES (?, ?, ?)', [msg.user, msg.class, time],
+export function insertMessage(db: Database, msg: IncomingMessage, time: string) {
+  const points = getPoints(msg.category);
+  db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', [msg.user, msg.category, points, time],
     (err) => {
       if (err) {
         console.error(`Failed to save data: ${err?.message}`);
@@ -58,20 +60,20 @@ export function insertMessage(db: Database, msg: Message, time: string) {
 }
 
 export function getStatistics(db: Database, dateFrom: string, callback: (stats: Statistics) => void) {
-  db.all('SELECT class, count(*) as count FROM collections WHERE date(time) >= date(?) GROUP BY class', [dateFrom], (err, rows) => {
+  db.all('SELECT category, sum(points) as pointsSum FROM collections WHERE date(time) >= date(?) GROUP BY category', [dateFrom], (err, rows) => {
     if (err) {
       console.error(`Failed to query statistics: ${err.message}`);
     }
     let stats: Statistics = emptyStats;
     rows.forEach(row => {
-      stats = { ...stats, [row.class]: row.count };
+      stats = { ...stats, [row.category]: row.pointsSum };
     });
     callback(stats);
   });
 }
 
 export function getTimeStatistics(db: Database, dateFrom: string, callback: (series: TimeStatistics) => void) {
-  let query = 'SELECT date(time) as dt, class, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY dt, class ORDER BY dt, class';
+  let query = 'SELECT date(time) as dt, category, sum(points) as pointsSum FROM collections WHERE date(time) >= date(?) GROUP BY dt, category ORDER BY dt, category';
 
   db.all(query, [dateFrom], (err, rows) => {
     if (err) {
@@ -83,22 +85,22 @@ export function getTimeStatistics(db: Database, dateFrom: string, callback: (ser
       while(stats[index].date !== row.dt) {
         index += 1;
       }
-      stats[index][row.class as GarbageClass] = row.points;
+      stats[index][row.category as GarbageCategory] = row.pointsSum;
     });
     callback(stats);
   });
 }
 
 export function getProgress(db: Database, dateFrom: string, callback: (series: ProgressStatistics) => void) {
-  let initialQuery = 'SELECT count(*) as points FROM collections WHERE date(time) < date(?)';
+  let initialQuery = 'SELECT sum(points) as pointsSum FROM collections WHERE date(time) < date(?)';
 
   db.all(initialQuery, [dateFrom], (err, rows) => {
     if (err) {
       console.error(`Failed to query progress statistics: ${err.message}`);
     }
-    let count = rows[0].points;
+    let count = rows[0].pointsSum;
 
-    let query = 'SELECT date(time) as dt, count(*) as points FROM collections WHERE date(time) >= date(?) GROUP BY dt ORDER BY dt';
+    let query = 'SELECT date(time) as dt, sum(points) as pointsSum FROM collections WHERE date(time) >= date(?) GROUP BY dt ORDER BY dt';
 
     db.all(query, [dateFrom], (err, rows) => {
       if (err) {
@@ -110,7 +112,7 @@ export function getProgress(db: Database, dateFrom: string, callback: (series: P
         while(stats[index].date !== row.dt) {
           index += 1;
         }
-        count = count + row.points;
+        count = count + row.pointsSum;
         stats[index].points = count;
       });
       callback(stats);
