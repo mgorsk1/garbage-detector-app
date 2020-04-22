@@ -86,11 +86,11 @@ const AnalyticsPage = () => {
     <Page>
       <Content>
         <Charts>
-            <Chart area="top-left" title="Progress last week">
-              <ProgressLineChart data={progressStats}/>
-            </Chart>
-            <Chart area="bottom-left" title="Last week summary">
+            <Chart area="top-left" title="Last week summary">
               <SummaryPieChart data={stats} />
+            </Chart>
+            <Chart area="bottom-left" title="Progress last week">
+              <ProgressLineChart data={progressStats}/>
             </Chart>
             <Chart area="right" title="Environment points collected last week">
               <WeekBarChart data={timeStats} />
