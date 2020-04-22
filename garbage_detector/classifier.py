@@ -73,7 +73,7 @@ class GarbageClassifier:
 
         image = cv2.resize(image, (224, 224))
 
-        image = np.expand_dims(image, axis=0)
+        image = np.expand_dims(image, axis=0).tolist()
 
         return image
 
