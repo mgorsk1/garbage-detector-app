@@ -61,10 +61,9 @@ class GarbageClassifier:
         image = cv2.resize(image, (800, 600))
 
         image = image[up:down, left:right]
+        image = cv2.resize(image, (128, 128))
 
-        image_resized = cv2.resize(image, (128, 128))
-
-        return image_resized, image
+        return image
 
     def classify(self, image):
         """
@@ -77,11 +76,11 @@ class GarbageClassifier:
         """
         logging.info('Starting classify process')
 
-        image_processed_resized, image_processed = self._prepare_image_for_model(image)
+        image = self._prepare_image_for_model(image)
 
-        classification = self._classify(image_processed_resized)
+        classification = self._classify(image)
 
-        img_url = self._upload_image_to_gcp(image_processed, classification)
+        img_url = self._upload_image_to_gcp(image, classification)
 
         self._notify_backend('Mariusz', classification, img_url)
 
