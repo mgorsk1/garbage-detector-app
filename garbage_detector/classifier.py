@@ -23,7 +23,7 @@ class GarbageClassifier:
 
     def _classify(self, image):
         name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
-        name += f'/versions/{config.gcp.model.version}'
+        name += f'/versions/{int(config.gcp.model.version)}'
 
         response = self.ai.projects().predict(
             name=name,
