@@ -10,13 +10,13 @@ interface Props {
 const getColor = (category: string): string => {
   switch(category) {
     case 'Paper':
-      return colors.yellow;
-    case 'Glass':
-      return colors.blue;
-    case 'Plastic':
-      return colors.red;
-    case 'Non recyclable':
       return colors.green;
+    case 'Glass':
+      return colors.brown;
+    case 'Plastic':
+      return colors.water;
+    case 'Non recyclable':
+      return colors.grey;
   }
   return '';
 };
@@ -41,7 +41,7 @@ const WeekBarChart = ({ data }: Props) => {
       top: 20,
       right: 30,
       bottom: 50,
-      left: 50
+      left: 30
     }}
     innerPadding={3}
     borderRadius={5}

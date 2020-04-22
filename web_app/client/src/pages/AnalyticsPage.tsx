@@ -12,39 +12,58 @@ const Content = styled.div`
   position: relative;
   margin: 50px 0;
   z-index: 1;
-  padding: 20px 20px 20px 30px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.7);
 `;
 
 const Title = styled.h1`
   font-size: 16px;
+  height: 46px;
   text-align: center;
 `;
 
 const Charts = styled.div`
-  height: 600px;
-  display: flex;
-  flex-direction: row;
+  height: 480px;
+  display: grid;
+  grid-template:
+    [row1-start] "top-left right" 50% [row1-end]
+    [row2-start] "bottom-left right" 50% [row2-end]
+    / 35% 65%;
   align-items: center;
+  gap: 10px;
 `;
 
-const LeftPane = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 35%;
-`;
-
-const ChartContainer = styled.div`
-  height: 50%;
+const ChartContainer = styled.div<{area: string}>`
+  position: relative;
+  grid-area: ${props => props.area};
   width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.7);
 `;
 
-const RightPane = styled.div`
-  width: 65%;
-  height: 100%
+const ChartInnerContainer = styled.div`
+  position: absolute;
+  top: 46px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
 `;
+
+interface ChartProps {
+  area: string;
+  title: string;
+  children: React.ReactNode;
+}
+
+const Chart = ({area, title, children }: ChartProps) => {
+  return (
+    <ChartContainer area={area}>
+      <Title>{title}</Title>
+      <ChartInnerContainer>
+        {children}
+      </ChartInnerContainer>
+    </ChartContainer>
+  );
+}
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(emptyStats);
@@ -66,19 +85,16 @@ const AnalyticsPage = () => {
   return (
     <Page>
       <Content>
-        <Title>Last week's environmental progress</Title>
         <Charts>
-          <LeftPane>
-            <ChartContainer>
+            <Chart area="top-left" title="Progress last week">
               <ProgressLineChart data={progressStats}/>
-            </ChartContainer>
-            <ChartContainer>
+            </Chart>
+            <Chart area="bottom-left" title="Last week summary">
               <SummaryPieChart data={stats} />
-            </ChartContainer>
-          </LeftPane>
-          <RightPane>
-            <WeekBarChart data={timeStats} />
-          </RightPane>
+            </Chart>
+            <Chart area="right" title="Environment points collected last week">
+              <WeekBarChart data={timeStats} />
+            </Chart>
         </Charts>
       </Content>
       <HomeButton to="/" text="Home" icon={<Home />} />

@@ -50,11 +50,12 @@ export const Page = styled.div`
 
 export const colors = {
   yellow: "#F9DEC9",
-  brown: "#ad7d54",
+  brown: "#cda96f",
   red: "#E9AFA3",
   blue: "#AEC5EB",
+  water: "#53C3DA",
   navy: "#0e4275",
-  green: "#50b753",
+  green: "#20a51d",
   grey: "#999",
   pink: "#f4e7d7",
   purple: "#7c5681",

@@ -32,7 +32,7 @@ const ProgressLineChart = ({ data }: Props) => {
     data={formattedData}
     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
     margin={{
-      top: 50,
+      top: 20,
       right: 20,
       bottom: 50,
       left: 40
