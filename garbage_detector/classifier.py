@@ -5,11 +5,13 @@ import cv2
 import numpy as np
 import requests
 
+from garbage_detector import config
+from garbage_detector.utils.gcp import GCP
 
-# @TODO develop this
+
 class GarbageClassifier:
     def __init__(self):
-        pass
+        self.gcp = GCP()
 
     def _classify(self, image):
         result = random.choice(['glass', 'plastic', 'paper', 'rest'])
@@ -17,16 +19,23 @@ class GarbageClassifier:
         logging.info(f'Image classified as: {result}')
         return result
 
-    def _upload_image_to_gcp(self, image):
-        result = 'https://storage.googleapis.com/garbage-detector-classifications/20200419_100642%20(1).jpg'
+    def _upload_image_to_gcp(self, image, classification):
+        photo_url = self.gcp.upload_image(image, classification)
 
-        logging.info(f'Image uploaded to GCP as: {result}')
-        return result
+        logging.info(f'Image uploaded to GCP as: {photo_url}')
+
+        return photo_url
 
     def _notify_backend(self, user, category, image):
         json_payload = {'user': user, 'class': category, 'image': image}
 
-        r = requests.post('http://192.168.0.17:9000/collections', json=json_payload)
+        logging.info(f'Sending payload to backend: {json_payload}')
+
+        scheme = config.backend.scheme
+        host = config.backend.host
+        port = config.backend.port
+
+        r = requests.post(f'{scheme}://{host}:{port}/collections', json=json_payload)
 
         logging.info(f'Backend notified with response: {r}')
         return r
@@ -50,12 +59,22 @@ class GarbageClassifier:
         return image
 
     def classify(self, image):
+        """
+        Classifies an image and notifies the backend of this. Process:
+            1. Call GCP to classify the image
+            2. Upload the image to GCP Bucket
+            3. Notifying the backend
+        :param image: Image opened with OpenCV (cv2)
+        :return:
+        """
         logging.info('Starting classify process')
 
         image_processed = self._prepare_image_for_model(image)
 
         classification = self._classify(image_processed)
 
-        photo_url = self._upload_image_to_gcp(image_processed)
+        img_url = self._upload_image_to_gcp(image, classification)
 
-        self._notify_backend('Mariusz', classification, photo_url)
+        self._notify_backend('Mariusz', classification, img_url)
+
+        return classification
