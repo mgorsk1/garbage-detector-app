@@ -12,13 +12,13 @@ import {
 import Trivia from "./Trivia";
 
 interface Props {
-  category?: Category;
+  category?: any;
   state: any;
 }
 
 const Notification = ({ category }: Props) => {
-  const { name, points, image, color } =
-    Categories[category] || Categories.default;
+  if (!category) return "";
+  const { name, points, image, color } = category;
   return (
     <Page>
       <Content>

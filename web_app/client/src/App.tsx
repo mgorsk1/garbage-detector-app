@@ -22,13 +22,10 @@ const App = () => {
     ws.current.onmessage = (e) => {
       clearTimeout(timer.current as NodeJS.Timeout);
       const data = _.attempt(() => JSON.parse(e.data), {});
-
       if (_.isEmpty(data)) return;
-
-      const cat = _.get(data, "collections");
-      if (cat && Category[Number(cat)]) {
+      if (data.category) {
         setOn(true);
-        setCategory(Number(cat));
+        setCategory(Categories[data.category](data.points) || Categories[data.default]());
 
         timer.current = setTimeout(() => {
           setOn(false);

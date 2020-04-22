@@ -33,7 +33,7 @@ export const Container = styled.div<{ on: string }>`
     right: 0;
     bottom: 0;
     pointer-events: none;
-    background-image: url("https://cdn.dribbble.com/users/1803663/screenshots/6080532/kerala_paddy_field.png");
+    background-image: url("https://images.unsplash.com/photo-1566636571155-8c44187a0ccb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2010&q=80");
     background-size: cover;
     transition: all 500ms ease-in-out;
     opacity: ${props => props.on ? 0 : 1 };
