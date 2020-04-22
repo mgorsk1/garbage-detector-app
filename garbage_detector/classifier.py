@@ -1,11 +1,12 @@
 import logging
-import random
+from json import loads
 
 import cv2
-import numpy as np
 import requests
+from google.cloud import vision
+from google.cloud.vision import types
 
-from garbage_detector import config
+from garbage_detector import config, BASE_PATH
 from garbage_detector.utils.gcp import GCP
 
 
@@ -13,11 +14,47 @@ class GarbageClassifier:
     def __init__(self):
         self.gcp = GCP()
 
-    def _classify(self, image):
-        result = random.choice(['glass', 'plastic', 'paper', 'rest'])
+        with open(f'{BASE_PATH}/resources/gcp_objects/class-descriptions.json') as f:
+            self.labels = loads(f.read())
 
-        logging.info(f'Image classified as: {result}')
-        return result
+        self.vision = vision.ImageAnnotatorClient()
+
+    def _classify(self, image):
+        frame_bytes = cv2.imencode('.jpg', image)[1].tostring()
+
+        image = types.Image(content=frame_bytes)
+
+        response = self.vision.label_detection(image=image)
+        annotations = {l.description: round(l.score * 100, 2) for l in response.label_annotations}
+
+        result = self._get_best_pick(annotations)
+
+        if result is not None:
+            description, category, confidence = [result.get(x) for x in ['description', 'category', 'confidence']]
+
+            if confidence >= 70:
+                return category
+
+                logging.info(f'Image classified as: {category}')
+        else:
+            return None
+
+    def _get_best_pick(self, values):
+        import operator
+
+        values_sorted = sorted(values.items(), key=operator.itemgetter(1), reverse=True)
+
+        for description, score in values_sorted:
+            category = self.labels.get(description)
+
+            if category:
+                result = dict(description=description, category=category, confidence=score)
+
+                logging.info(f'Found best pick: {result}')
+
+                return result
+
+        return None
 
     def _upload_image_to_gcp(self, image, classification):
         photo_url = self.gcp.upload_image(image, classification)
@@ -41,20 +78,10 @@ class GarbageClassifier:
         return r
 
     def _prepare_image_for_model(self, image):
-        resize_to = (800, 600)
-        crop_to = (250, 250)
-
-        up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
-        left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
+        resize_to = (1200, 900)
 
         image = cv2.flip(image, 0)
-        image = cv2.resize(image, (800, 600))
-
-        image = image[up:down, left:right]
-
-        image = cv2.resize(image, (224, 224))
-
-        image = np.expand_dims(image, axis=0)
+        image = cv2.resize(image, resize_to)
 
         return image
 
