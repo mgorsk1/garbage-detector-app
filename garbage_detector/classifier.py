@@ -1,10 +1,12 @@
 import logging
-import random
 
 import cv2
+import googleapiclient.discovery
 import numpy as np
 import requests
+from google.oauth2 import service_account
 
+from garbage_detector import BASE_PATH
 from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
 
@@ -13,8 +15,25 @@ class GarbageClassifier:
     def __init__(self):
         self.gcp = GCP()
 
+        sa_file = f'{BASE_PATH}/../resources/keys/ai.json'
+        credentials = service_account.Credentials.from_service_account_file(sa_file)
+
+        self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
+        self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
+
     def _classify(self, image):
-        result = random.choice(['glass', 'plastic', 'paper', 'rest'])
+        name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
+        name += f'/versions/{config.gcp.model.version}'
+
+        response = self.ai.projects().predict(
+            name=name,
+            body={'instances': image},
+        ).execute()[0]['dense_8']
+
+        if 'error' in response:
+            raise RuntimeError(response['error'])
+
+        result = self.classes[response.index(max(response))]
 
         logging.info(f'Image classified as: {result}')
         return result

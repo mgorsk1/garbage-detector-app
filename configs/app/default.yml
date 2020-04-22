@@ -18,6 +18,11 @@ leds:
   yellow: ${LEDS_YELLOW_PIN:-23}
   blue: ${LEDS_BLUE_PIN:-22}
 gcp:
+  project:
+    name: ${GCP_PROJECT_NAME:-experiment-week}
+  model:
+    name: ${GCP_MODEL_NAME:-garbage_model_h5_128}
+    version: ${GCP_MODEL_VERSION:-1}
   bucket:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
 backend:
