@@ -9,13 +9,13 @@ interface Props {
 
 const getColor = (category: string): string => {
   switch(category) {
-    case 'paper':
+    case 'Paper':
       return colors.yellow;
-    case 'glass':
+    case 'Glass':
       return colors.blue;
-    case 'plastic':
+    case 'Plastic':
       return colors.red;
-    case 'rest':
+    case 'Non recyclable':
       return colors.green;
   }
   return '';
@@ -25,22 +25,22 @@ const getColor = (category: string): string => {
 const SummaryPieChart = ({ data }: Props) => {
   const formattedData: PieDatum[] = [
     {
-      id: 'rest',
-      value: data.rest,
-      color: colors.green,
-    },
-    {
-      id: 'plastic',
+      id: 'Plastic',
       value: data.plastic,
       color: colors.red,
     },
     {
-      id: 'glass',
+      id: 'Glass',
       value: data.glass,
       color: colors.blue,
     },
     {
-      id: 'paper',
+      id: 'Non recyclable',
+      value: data.rest,
+      color: colors.green,
+    },
+    {
+      id: 'Paper',
       value: data.paper,
       color: colors.yellow,
     },
@@ -58,11 +58,17 @@ const SummaryPieChart = ({ data }: Props) => {
     innerRadius={0.6}
     padAngle={0.5}
     cornerRadius={5}
+    radialLabel={({ id }) => id === 'Non recyclable' ? 'NR' : id as string}
     radialLabelsLinkColor={{ from: 'color', modifiers: [] }}
     radialLabelsTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
     radialLabelsLinkStrokeWidth={2}
     slicesLabelsTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
     colors={({ id, data }) => getColor(id as string)}
+    tooltip={({ id, value, color }) => (
+      <strong style={{ color }}>
+        {id}: {value} points
+      </strong>
+    )}
   />
 };
 

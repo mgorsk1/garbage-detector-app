@@ -60,5 +60,20 @@ export const colors = {
 };
 
 export const nivoTheme: Theme = {
-  fontSize: '13px',
+  fontSize: 13,
+  tooltip: {
+    container: {
+      background: '#333333',
+    },
+  },
+  sliceTooltip: {
+    container: {
+      background: '#333333',
+      color: 'inherit',
+      fontSize: 'inherit',
+      borderRadius: '2px',
+      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.25)',
+      padding: '5px 9px'
+    },
+  },
 } as Theme;

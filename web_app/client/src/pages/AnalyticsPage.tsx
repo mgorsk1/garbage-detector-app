@@ -11,11 +11,19 @@ import ProgressLineChart from '../components/ProgressLineChart';
 const Content = styled.div`
   position: relative;
   margin: 50px 0;
-  height: 650px;
   z-index: 1;
   padding: 20px 20px 20px 30px;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.7);
+`;
+
+const Title = styled.h1`
+  font-size: 16px;
+  text-align: center;
+`;
+
+const Charts = styled.div`
+  height: 600px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,17 +66,20 @@ const AnalyticsPage = () => {
   return (
     <Page>
       <Content>
-        <LeftPane>
-          <ChartContainer>
-            <ProgressLineChart data={progressStats}/>
-          </ChartContainer>
-          <ChartContainer>
-            <SummaryPieChart data={stats} />
-          </ChartContainer>
-        </LeftPane>
-        <RightPane>
-          <WeekBarChart data={timeStats} />
-        </RightPane>
+        <Title>Last week's environmental progress</Title>
+        <Charts>
+          <LeftPane>
+            <ChartContainer>
+              <ProgressLineChart data={progressStats}/>
+            </ChartContainer>
+            <ChartContainer>
+              <SummaryPieChart data={stats} />
+            </ChartContainer>
+          </LeftPane>
+          <RightPane>
+            <WeekBarChart data={timeStats} />
+          </RightPane>
+        </Charts>
       </Content>
       <HomeButton to="/" text="Home" icon={<Home />} />
     </Page>

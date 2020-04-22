@@ -9,24 +9,32 @@ interface Props {
 
 const getColor = (category: string): string => {
   switch(category) {
-    case 'paper':
+    case 'Paper':
       return colors.yellow;
-    case 'glass':
+    case 'Glass':
       return colors.blue;
-    case 'plastic':
+    case 'Plastic':
       return colors.red;
-    case 'rest':
+    case 'Non recyclable':
       return colors.green;
   }
   return '';
 };
 
-
 const WeekBarChart = ({ data }: Props) => {
+  const formattedData = data.map(row => ({
+    date: row.date,
+    day: row.day,
+    'Paper': row.paper,
+    'Glass': row.glass,
+    'Plastic': row.plastic,
+    'Non recyclable': row.rest,
+  }));
+
   return <ResponsiveBar
     theme={nivoTheme}
-    data={data}
-    keys={['paper', 'glass', 'plastic', 'rest']}
+    data={formattedData}
+    keys={['Paper', 'Glass', 'Plastic', 'Non recyclable']}
     indexBy="day"
     groupMode="stacked"
     margin={{
@@ -43,6 +51,11 @@ const WeekBarChart = ({ data }: Props) => {
     padding={0.5}
     colors={({ id, data }) => getColor(id)}
     animate={false}
+    tooltip={({ id, value, color }) => (
+      <strong style={{ color }}>
+        {id}: {value} points
+      </strong>
+    )}
   />
 };
 
