@@ -11,7 +11,7 @@ trigger:
     distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-25}
     distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-65}
     led: ${TRIGGER_PARAMETERS_LED:-24}
-  delay: ${TRIGGER_DELAY:-3}
+  delay: ${TRIGGER_DELAY:-2}
 leds:
   green: ${LEDS_GREEN_PIN:-27}
   red: ${LEDS_RED_PIN:-14}
