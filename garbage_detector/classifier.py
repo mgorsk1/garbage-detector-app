@@ -82,7 +82,7 @@ class GarbageClassifier:
 
     def _prepare_image_for_model(self, image):
         resize_to = (2400, 1800)
-        crop_to = (1300, 1300)
+        crop_to = (1450, 1450)
 
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
