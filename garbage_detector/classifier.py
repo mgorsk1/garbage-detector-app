@@ -31,6 +31,8 @@ class GarbageClassifier:
             body={'instances': [image]},
         ).execute()
 
+        logging.info(f'Received response {response}')
+
         predictions = list(response.get('predictions')[0][0])
 
         if 'error' in response:
@@ -48,8 +50,8 @@ class GarbageClassifier:
 
         return photo_url
 
-    def _notify_backend(self, user, category, image):
-        json_payload = {'user': user, 'class': category, 'image': image}
+    def _notify_backend(self, category):
+        json_payload = {'category': category}
 
         logging.info(f'Sending payload to backend: {json_payload}')
 
@@ -94,6 +96,6 @@ class GarbageClassifier:
 
         img_url = self._upload_image_to_gcp(image, classification)
 
-        self._notify_backend('Mariusz', classification, img_url)
+        self._notify_backend(classification)
 
         return classification
