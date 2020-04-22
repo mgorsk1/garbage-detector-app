@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colors } from "../App.styles";
 
 export const Content = styled.div`
   display: flex;
@@ -10,51 +9,28 @@ export const Content = styled.div`
 
 export const Section = styled.div`
   margin-right: 20px;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-export const EP = styled.div`
-  position: relative;
-  color: ${colors.greenDark};
-  height: 80px;
-  font-size: 80px;
+`;
+
+export const Points = styled.div`
+  font-size: 36px;
   font-weight: 300;
-`
-
-export const Points = styled.span`
-  position: absolute;
-  top: 0;
-  left: 0;
-`
+`;
 
 export const Small = styled.span`
   font-size: 18px;
   line-height: 18px;
-`
-  
-export const PointsAnimated = styled.span<{state: any}>`
-  // display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  // transition: all 2000ms ease;
-  // transition-delay: 1000ms;
-  // opacity: ${props => props.state === 'entering' || props.state === 'entered' ? 0 : 1};
-  // transform: translateY(${props => props.state === 'entering' || props.state === 'entered' ? '-100%' : 0});
-
-  &:before {
-    content: "+";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-  }
-`
+`;
 
 export const Title = styled.h1`
-  font-size: 38px;
-  margin-top: 30px;
-  margin-bottom: 0;
+  font-size: 60px;
+  font-weight: 300;
+  color: #222;
+  text-transform: capitalize;
+  margin: 0;
 `;
 
 export const Categories = styled.ul`
@@ -77,8 +53,8 @@ export const Category = styled.span<{ color: string }>`
   mix-blend-mode: difference;
 `;
 
-export const Picture = styled.div<{url: string}>`
-  background-image: url(${props => props.url});
+export const Picture = styled.div<{ url: string }>`
+  background-image: url(${(props) => props.url});
   width: 500px;
   height: 500px;
   max-width: calc(50vw - 80px);

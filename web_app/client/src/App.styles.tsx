@@ -36,8 +36,8 @@ export const Container = styled.div<{ on: string }>`
     background-image: url("https://cdn.dribbble.com/users/1803663/screenshots/6080532/kerala_paddy_field.png");
     background-size: cover;
     transition: all 500ms ease-in-out;
-    opacity: ${props => props.on && props.color ? 0 : 1 };
-    filter: blur(${props => props.on && props.color ? '80px' : 0});
+    opacity: ${props => props.on ? 0 : 1 };
+    filter: blur(${props => props.on ? '80px' : 0});
   }
 `;
 
@@ -50,11 +50,12 @@ export const Page = styled.div`
 
 export const colors = {
   yellow: "#F9DEC9",
+  brown: "#ad7d54",
   red: "#E9AFA3",
   blue: "#AEC5EB",
   navy: "#0e4275",
-  green: "#94F098",
-  greenDark: "#50b753",
+  green: "#50b753",
+  grey: "#999",
   pink: "#f4e7d7",
   purple: "#7c5681",
 };

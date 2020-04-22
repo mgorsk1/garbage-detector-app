@@ -1,42 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Page } from "../App.styles";
+import { Categories, Category } from "../constants";
 import {
   Content,
-  Title,
-  Categories,
-  Category,
   Picture,
   Points,
-  PointsAnimated,
   Section,
-  EP,
   Small,
+  Title,
 } from "./Notification.styles";
 import Trivia from "./Trivia";
-import { Category as CategoryEnum, Categories as CategoriesTable } from "../constants";
 
 interface Props {
-  category?: CategoryEnum;
+  category?: Category;
   state: any;
 }
 
-const Notification = ({ category, state }: Props) => {
-  const { name, phrase, points, image, color } = CategoriesTable[category] || CategoriesTable.default;
+const Notification = ({ category }: Props) => {
+  const { name, points, image, color } =
+    Categories[category] || Categories.default;
   return (
     <Page>
       <Content>
         <Section>
-          <Categories>
-            <Category color={color}>{name}</Category>
-          </Categories>
-          <Title>{phrase}</Title>
+          <Title color={color}>{name}</Title>
           <Trivia />
-          <EP>
-            <Points>
-              +{points}<Small> EP</Small>
-            </Points>
-            {/* <PointsAnimated state={state}>{points}</PointsAnimated> */}
-          </EP>
+          <Points>
+            +{points}
+            <Small> EP</Small>
+          </Points>
         </Section>
         <Picture url={image} />
       </Content>

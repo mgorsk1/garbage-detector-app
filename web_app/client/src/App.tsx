@@ -9,8 +9,6 @@ import { Styles, Container } from "./App.styles";
 import { Category, Categories } from "./constants";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import HomePage from "./pages/HomePage";
-import Logo from "./components/Logo";
-import WsSignal from "./components/WsSignal";
 import _ from "lodash";
 
 const App = () => {
@@ -34,7 +32,7 @@ const App = () => {
 
         timer.current = setTimeout(() => {
           setOn(false);
-        }, 8000);
+        }, 5000);
       }
     };
 
@@ -42,14 +40,12 @@ const App = () => {
   }, []);
 
   return (
-    <Container on={on} color={Categories[category] ? Categories[category].color : 'transparent'}>
+    <Container on={on}>
       <Styles />
-      <Logo />
-      <WsSignal status={status} />
       <Router>
         <Switch>
           <Route path="/home">
-            <HomePage category={category} on={on}/>
+            <HomePage category={category} on={on} />
           </Route>
           <Route path="/analyse">
             <AnalyticsPage />

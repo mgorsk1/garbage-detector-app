@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 
 const Text = styled.div`
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - 100px);
 `;
 
 const Trivia = () => {

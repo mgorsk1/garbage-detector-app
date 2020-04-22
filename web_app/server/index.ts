@@ -48,7 +48,7 @@ const broadcastMessage = (msg: Message) => {
   console.log(`Notifying ${wss.clients.size} clients`);
   wss.clients
     .forEach(client => {
-      client.send(JSON.stringify({ ...msg, collections: 1 } ));
+      client.send(JSON.stringify(msg));
     });
 };
 
