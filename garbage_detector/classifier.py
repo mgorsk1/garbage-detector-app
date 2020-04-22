@@ -22,6 +22,8 @@ class GarbageClassifier:
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
     def _classify(self, image):
+        image = np.expand_dims(image, axis=0).tolist()
+
         name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
 
         response = self.ai.projects().predict(
@@ -70,13 +72,10 @@ class GarbageClassifier:
         # image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
-        _result = image[up:down, left:right]
+        result = image[up:down, left:right]
+        result = cv2.resize(result, (128, 128))
 
-        _result = cv2.resize(_result, (128, 128))
-
-        result = np.expand_dims(_result, axis=0).tolist()
-
-        return result, _result
+        return result
 
     def classify(self, image):
         """
@@ -89,9 +88,9 @@ class GarbageClassifier:
         """
         logging.info('Starting classify process')
 
-        image_processed, image = self._prepare_image_for_model(image)
+        image = self._prepare_image_for_model(image)
 
-        classification = self._classify(image_processed)
+        classification = self._classify(image)
 
         img_url = self._upload_image_to_gcp(image, classification)
 
