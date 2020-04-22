@@ -59,6 +59,8 @@ class GarbageClassifier:
         host = config.backend.host
         port = config.backend.port
 
+        logging.info(f'Sending notification to backend: {json_payload}')
+
         r = requests.post(f'{scheme}://{host}:{port}/collections', json=json_payload)
 
         logging.info(f'Backend notified with response: {r}')
