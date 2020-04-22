@@ -14,7 +14,7 @@ import { getPoints } from './index';
 
 export function openDatabase(): Database {
   const db = new sqlite3.Database(':memory:');
-  db.run('CREATE TABLE IF NOT EXISTS collections(user text, category text, points integer, time text)', (err) => {
+  db.run('CREATE TABLE IF NOT EXISTS collections(category text, points integer, time text)', (err) => {
     if (err) {
       console.error('Failed to open database!');
       process.exit(1);
@@ -34,16 +34,16 @@ function createSampleData(db: Database) {
     const rest = Math.floor(Math.random() * 10);
     const time = date.toISOString();
     for (let i = 0; i < paper; i++) {
-      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'paper', 3, time]);
+      db.run('INSERT INTO collections(category, points, time) VALUES (?, ?, ?)', ['paper', 3, time]);
     }
     for (let i = 0; i < glass; i++) {
-      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'glass', 5, time]);
+      db.run('INSERT INTO collections(category, points, time) VALUES (?, ?, ?)', ['glass', 5, time]);
     }
     for (let i = 0; i < plastic; i++) {
-      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'plastic', 10, time]);
+      db.run('INSERT INTO collections(category, points, time) VALUES (?, ?, ?)', ['plastic', 10, time]);
     }
     for (let i = 0; i < rest; i++) {
-      db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', ['Test', 'rest', 1, time]);
+      db.run('INSERT INTO collections(category, points, time) VALUES (?, ?, ?)', ['rest', 1, time]);
     }
     date = date.add(1, 'days');
   } while (date <= currentDate);
@@ -51,7 +51,7 @@ function createSampleData(db: Database) {
 
 export function insertMessage(db: Database, msg: IncomingMessage, time: string) {
   const points = getPoints(msg.category);
-  db.run('INSERT INTO collections(user, category, points, time) VALUES (?, ?, ?, ?)', [msg.user, msg.category, points, time],
+  db.run('INSERT INTO collections(category, points, time) VALUES (?, ?, ?)', [msg.category, points, time],
     (err) => {
       if (err) {
         console.error(`Failed to save data: ${err?.message}`);
