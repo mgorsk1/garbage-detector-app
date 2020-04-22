@@ -15,7 +15,7 @@ class GarbageClassifier:
     def __init__(self):
         self.gcp = GCP()
 
-        sa_file = f'{BASE_PATH}/../resources/keys/ai.json'
+        sa_file = f'{BASE_PATH}/resources/keys/ai.json'
         credentials = service_account.Credentials.from_service_account_file(sa_file)
 
         self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
