@@ -23,6 +23,8 @@ class GarbageClassifier:
             data=json.dumps(dict(instances=[image.tolist()])),
         )
 
+        logging.info(f'Received response: {request.__dict__}')
+
         predictions = json.loads(request.content)['predictions'][0]
         result = self.classes[predictions.index(max(predictions))]
 
@@ -36,7 +38,7 @@ class GarbageClassifier:
 
         return photo_url
 
-    def _notify_backend(self, user, category, image):
+    def _notify_backend(self, category):
         json_payload = {'category': category}
 
         logging.info(f'Sending payload to backend: {json_payload}')
@@ -82,6 +84,6 @@ class GarbageClassifier:
 
         img_url = self._upload_image_to_gcp(image, classification)
 
-        self._notify_backend('Mariusz', classification, img_url)
+        self._notify_backend(classification)
 
         return classification
