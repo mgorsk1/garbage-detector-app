@@ -33,7 +33,7 @@ class GarbageClassifier:
 
         logging.info(f'Received response {response}')
 
-        predictions = list(response.get('predictions')[0][0])
+        predictions = list(response.get('predictions')[0])
 
         if 'error' in response:
             raise RuntimeError(response['error'])
