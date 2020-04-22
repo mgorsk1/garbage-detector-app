@@ -22,7 +22,7 @@ class GarbageClassifier:
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
     def _classify(self, image):
-        image = np.expand_dims(image, axis=0).tolist()
+        image = image.tolist()
 
         name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
 
