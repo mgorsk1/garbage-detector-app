@@ -60,10 +60,10 @@ class GarbageClassifier:
         # image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
-        image = image[up:down, left:right]
-        image = cv2.resize(image, (128, 128))
+        result = image[up:down, left:right]
+        result = cv2.resize(result, (128, 128))
 
-        return image
+        return result
 
     def classify(self, image):
         """
