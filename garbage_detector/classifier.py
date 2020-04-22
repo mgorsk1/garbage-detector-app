@@ -1,5 +1,5 @@
+import json
 import logging
-import random
 
 import cv2
 import numpy as np
@@ -13,8 +13,18 @@ class GarbageClassifier:
     def __init__(self):
         self.gcp = GCP()
 
+        self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
+
     def _classify(self, image):
-        result = random.choice(['glass', 'plastic', 'paper', 'rest'])
+        image = np.ascontiguousarray(image)
+
+        request = requests.post(
+            'http://192.168.0.17:8500/v1/models/gd:predict',
+            data=json.dumps(dict(instances=[image.tolist()])),
+        )
+
+        predictions = json.loads(request.content)['predictions'][0]
+        result = self.classes[predictions.index(max(predictions))]
 
         logging.info(f'Image classified as: {result}')
         return result
@@ -53,8 +63,6 @@ class GarbageClassifier:
         image = image[up:down, left:right]
 
         image = cv2.resize(image, (224, 224))
-
-        image = np.expand_dims(image, axis=0)
 
         return image
 
