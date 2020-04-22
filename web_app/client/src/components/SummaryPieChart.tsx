@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsivePie, PieDatum } from '@nivo/pie'
 import { Statistics } from '../constants/model';
-import { colors } from '../App.styles';
+import { colors, nivoTheme } from '../App.styles';
 
 interface Props {
   data: Statistics;
@@ -47,6 +47,7 @@ const SummaryPieChart = ({ data }: Props) => {
   ];
 
   return <ResponsivePie
+    theme={nivoTheme}
     data={formattedData}
     margin={{
       top: 50,

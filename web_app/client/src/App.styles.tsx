@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
+import { Theme } from '@nivo/core';
 
 export const Styles = createGlobalStyle`
   *,
@@ -57,3 +58,7 @@ export const colors = {
   pink: "#f4e7d7",
   purple: "#7c5681",
 };
+
+export const nivoTheme: Theme = {
+  fontSize: '13px',
+} as Theme;

@@ -11,7 +11,7 @@ import ProgressLineChart from '../components/ProgressLineChart';
 const Content = styled.div`
   position: relative;
   margin: 50px 0;
-  height: 600px;
+  height: 650px;
   z-index: 1;
   padding: 20px 20px 20px 30px;
   border-radius: 12px;
@@ -25,7 +25,7 @@ const LeftPane = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 30%;
+  width: 35%;
 `;
 
 const ChartContainer = styled.div`
@@ -34,7 +34,7 @@ const ChartContainer = styled.div`
 `;
 
 const RightPane = styled.div`
-  width: 70%;
+  width: 65%;
   height: 100%
 `;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar'
 import { TimeStatistics } from '../constants/model';
-import { colors } from '../App.styles';
+import { colors, nivoTheme } from '../App.styles';
 
 interface Props {
   data: TimeStatistics;
@@ -24,6 +24,7 @@ const getColor = (category: string): string => {
 
 const WeekBarChart = ({ data }: Props) => {
   return <ResponsiveBar
+    theme={nivoTheme}
     data={data}
     keys={['paper', 'glass', 'plastic', 'rest']}
     indexBy="day"

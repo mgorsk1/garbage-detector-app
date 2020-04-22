@@ -1,26 +1,12 @@
 import React from 'react';
 import { ResponsiveLine, Serie } from '@nivo/line'
+import { Theme } from '@nivo/core'
 import { ProgressStatistics } from '../constants/model';
-import { colors } from '../App.styles';
+import { colors, nivoTheme } from '../App.styles';
 
 interface Props {
   data: ProgressStatistics;
 }
-
-const getColor = (category: string): string => {
-  switch(category) {
-    case 'paper':
-      return colors.yellow;
-    case 'glass':
-      return colors.blue;
-    case 'plastic':
-      return colors.red;
-    case 'rest':
-      return colors.green;
-  }
-  return '';
-};
-
 
 const ProgressLineChart = ({ data }: Props) => {
   const formattedData: Serie[] = [
@@ -35,6 +21,7 @@ const ProgressLineChart = ({ data }: Props) => {
   ];
 
   return <ResponsiveLine
+    theme={nivoTheme}
     data={formattedData}
     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
     margin={{
@@ -48,6 +35,7 @@ const ProgressLineChart = ({ data }: Props) => {
     pointBorderColor={{ from: 'serieColor' }}
     pointLabel="y"
     pointLabelYOffset={-12}
+    animate={false}
   />
 };
 
