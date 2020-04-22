@@ -70,13 +70,13 @@ class GarbageClassifier:
         image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
-        result = image[up:down, left:right]
+        _result = image[up:down, left:right]
 
-        result = cv2.resize(result, (128, 128))
+        _result = cv2.resize(_result, (128, 128))
 
-        result = np.expand_dims(result, axis=0).tolist()
+        result = np.expand_dims(_result, axis=0).tolist()
 
-        return result, image
+        return result, _result
 
     def classify(self, image):
         """
@@ -93,7 +93,7 @@ class GarbageClassifier:
 
         classification = self._classify(image_processed)
 
-        img_url = self._upload_image_to_gcp(image_processed, classification)
+        img_url = self._upload_image_to_gcp(image, classification)
 
         self._notify_backend('Mariusz', classification, img_url)
 
