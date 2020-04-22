@@ -6,7 +6,8 @@ import requests
 from google.cloud import vision
 from google.cloud.vision import types
 
-from garbage_detector import config, BASE_PATH
+from garbage_detector import BASE_PATH
+from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
 
 
@@ -26,6 +27,8 @@ class GarbageClassifier:
 
         response = self.vision.label_detection(image=image)
         annotations = {l.description: round(l.score * 100, 2) for l in response.label_annotations}
+
+        logging.info(f'Received annotations {annotations}')
 
         result = self._get_best_pick(annotations)
 
