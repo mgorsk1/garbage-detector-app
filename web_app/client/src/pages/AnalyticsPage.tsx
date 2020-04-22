@@ -79,13 +79,13 @@ const AnalyticsPage = () => {
   const [progressStats, setProgressStats] = useState(emptyProgressStats);
 
   useEffect(() => {
-    fetch("http://localhost:9000/statistics")
+    fetch(`http://${location.hostname}:9000/statistics`)
       .then((res) => res.json())
       .then((stats) => setStats(stats));
-    fetch("http://localhost:9000/time-statistics")
+    fetch(`http://${location.hostname}:9000/time-statistics`)
       .then((res) => res.json())
       .then((stats) => setTimeStats(stats));
-    fetch("http://localhost:9000/progress")
+    fetch(`http://${location.hostname}:9000/progress`)
       .then((res) => res.json())
       .then((stats) => setProgressStats(stats));
   }, []);
