@@ -37,7 +37,7 @@ class GarbageClassifier:
         return photo_url
 
     def _notify_backend(self, user, category, image):
-        json_payload = {'class': category}
+        json_payload = {'category': category}
 
         logging.info(f'Sending payload to backend: {json_payload}')
 
