@@ -22,7 +22,7 @@ gcp:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
   vision:
     classification:
-      threshold: 60
+      threshold: 40
 backend:
   scheme: ${BACKEND_SCHEME:-http}
   host: ${BACKEND_HOST:-localhost}
