@@ -81,10 +81,16 @@ class GarbageClassifier:
         return r
 
     def _prepare_image_for_model(self, image):
-        resize_to = (1200, 900)
+        resize_to = (2400, 1800)
+        crop_to = (1600, 1600)
+
+        up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
+        left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
         image = cv2.flip(image, 0)
-        # image = cv2.resize(image, resize_to)
+        image = cv2.resize(image, resize_to)
+
+        image = image[up:down, left:right]
 
         return image
 
@@ -103,7 +109,7 @@ class GarbageClassifier:
 
         classification = self._classify(image_processed)
 
-        img_url = self._upload_image_to_gcp(image, classification)
+        img_url = self._upload_image_to_gcp(image_processed, classification)
 
         self._notify_backend('Mariusz', classification, img_url)
 
