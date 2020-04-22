@@ -84,7 +84,7 @@ class GarbageClassifier:
         resize_to = (1200, 900)
 
         image = cv2.flip(image, 0)
-        image = cv2.resize(image, resize_to)
+        # image = cv2.resize(image, resize_to)
 
         return image
 
