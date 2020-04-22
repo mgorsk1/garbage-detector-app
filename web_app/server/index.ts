@@ -11,7 +11,7 @@ import moment from 'moment';
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 const port = 9000;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/subscribe' });
