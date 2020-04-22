@@ -28,10 +28,10 @@ class GarbageClassifier:
 
         response = self.ai.projects().predict(
             name=name,
-            body={'instances': image},
+            body={'instances': [image]},
         ).execute()
 
-        predictions = list(response.get('predictions')[0].values())
+        predictions = list(response.get('predictions')[0][0].values())
 
         if 'error' in response:
             raise RuntimeError(response['error'])
