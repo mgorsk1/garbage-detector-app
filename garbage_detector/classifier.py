@@ -28,7 +28,7 @@ class GarbageClassifier:
         response = self.ai.projects().predict(
             name=name,
             body={'instances': image},
-        ).execute()[0]['dense_8']
+        ).execute()
 
         if 'error' in response:
             raise RuntimeError(response['error'])
@@ -71,7 +71,7 @@ class GarbageClassifier:
 
         image = image[up:down, left:right]
 
-        image = cv2.resize(image, (224, 224))
+        image = cv2.resize(image, (128, 128))
 
         image = np.expand_dims(image, axis=0).tolist()
 
