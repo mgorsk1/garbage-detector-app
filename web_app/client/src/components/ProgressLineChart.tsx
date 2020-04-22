@@ -34,14 +34,23 @@ const ProgressLineChart = ({ data }: Props) => {
     margin={{
       top: 20,
       right: 20,
-      bottom: 50,
-      left: 40
+      bottom: 30,
+      left: 30
     }}
     pointColor="white"
     pointBorderWidth={2}
     pointBorderColor={{ from: 'serieColor' }}
     animate={false}
     enableSlices="x"
+    axisBottom={{
+      tickSize: 0,
+      tickPadding: 10
+    }}
+    axisLeft={{
+      tickSize: 0,
+      tickPadding: 10,
+      tickValues: 5,
+    }}
     sliceTooltip={({ slice: { points } }) => (
       <Tooltip>
         <strong style={{color: points[0].serieColor}}>

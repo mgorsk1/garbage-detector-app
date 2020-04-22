@@ -1,51 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { Page } from "../App.styles";
-import { emptyProgressStats, emptyStats, emptyTimeStats } from "../constants/model";
+import {
+  emptyProgressStats,
+  emptyStats,
+  emptyTimeStats,
+} from "../constants/model";
 import styled from "styled-components";
 import WeekBarChart from "../components/WeekBarChart";
 import HomeButton from "../components/HomeButton";
 import Home from "../icons/Home";
-import SummaryPieChart from '../components/SummaryPieChart';
-import ProgressLineChart from '../components/ProgressLineChart';
+import SummaryPieChart from "../components/SummaryPieChart";
+import ProgressLineChart from "../components/ProgressLineChart";
 
 const Content = styled.div`
+  margin-top: -20px;
   position: relative;
-  margin: 50px 0;
   z-index: 1;
 `;
 
+const Heading = styled.h1`
+  padding-bottom: 20px;
+  font-size: 36px;
+  font-weight: 300;
+  margin: 0;
+  color: #fff;
+`;
+
 const Title = styled.h1`
-  font-size: 16px;
-  height: 46px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 20px;
+  color: #222;
   text-align: center;
 `;
 
 const Charts = styled.div`
-  height: 480px;
+  height: 450px;
   display: grid;
   grid-template:
     [row1-start] "top-left right" 50% [row1-end]
     [row2-start] "bottom-left right" 50% [row2-end]
     / 35% 65%;
   align-items: center;
-  gap: 10px;
+  gap: 18px;
 `;
 
-const ChartContainer = styled.div<{area: string}>`
+const ChartContainer = styled.div<{ area: string }>`
   position: relative;
-  grid-area: ${props => props.area};
+  grid-area: ${(props) => props.area};
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 18px;
   background-color: rgba(255, 255, 255, 0.7);
 `;
 
 const ChartInnerContainer = styled.div`
-  position: absolute;
-  top: 46px;
-  left: 20px;
-  right: 20px;
-  bottom: 20px;
+  padding: 20px;
+  height: 100%;
 `;
 
 interface ChartProps {
@@ -54,16 +65,13 @@ interface ChartProps {
   children: React.ReactNode;
 }
 
-const Chart = ({area, title, children }: ChartProps) => {
+const Chart = ({ area, children }: ChartProps) => {
   return (
     <ChartContainer area={area}>
-      <Title>{title}</Title>
-      <ChartInnerContainer>
-        {children}
-      </ChartInnerContainer>
+      <ChartInnerContainer>{children}</ChartInnerContainer>
     </ChartContainer>
   );
-}
+};
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(emptyStats);
@@ -85,16 +93,17 @@ const AnalyticsPage = () => {
   return (
     <Page>
       <Content>
+        <Heading>Last week</Heading>
         <Charts>
-            <Chart area="top-left" title="Last week summary">
-              <SummaryPieChart data={stats} />
-            </Chart>
-            <Chart area="bottom-left" title="Progress last week">
-              <ProgressLineChart data={progressStats}/>
-            </Chart>
-            <Chart area="right" title="Environment points collected last week">
-              <WeekBarChart data={timeStats} />
-            </Chart>
+          <Chart area="top-left" title="Summary">
+            <SummaryPieChart data={stats} />
+          </Chart>
+          <Chart area="bottom-left" title="Progress">
+            <ProgressLineChart data={progressStats} />
+          </Chart>
+          <Chart area="right" title="Environment points collected">
+            <WeekBarChart data={timeStats} />
+          </Chart>
         </Charts>
       </Content>
       <HomeButton to="/" text="Home" icon={<Home />} />

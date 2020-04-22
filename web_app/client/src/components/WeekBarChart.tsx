@@ -39,16 +39,20 @@ const WeekBarChart = ({ data }: Props) => {
     groupMode="stacked"
     margin={{
       top: 20,
-      right: 30,
-      bottom: 50,
-      left: 30
+      right: 20,
+      bottom: 30,
+      left: 20
     }}
     innerPadding={3}
     borderRadius={5}
     labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
     axisLeft={null}
+    axisBottom={{
+      tickSize: 0
+      tickPadding: 10
+    }}
     layout="vertical"
-    padding={0.5}
+    padding={0.25}
     colors={({ id, data }) => getColor(id)}
     animate={false}
     tooltip={({ id, value, color }) => (
