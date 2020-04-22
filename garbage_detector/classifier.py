@@ -67,7 +67,7 @@ class GarbageClassifier:
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
-        image = cv2.flip(image, 0)
+        # image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
         _result = image[up:down, left:right]
