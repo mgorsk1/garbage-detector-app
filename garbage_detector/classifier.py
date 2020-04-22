@@ -72,9 +72,9 @@ class GarbageClassifier:
 
         result = image[up:down, left:right]
 
-        result = cv2.resize(image, (128, 128))
+        result = cv2.resize(result, (128, 128))
 
-        result = np.expand_dims(image, axis=0).tolist()
+        result = np.expand_dims(result, axis=0).tolist()
 
         return result, image
 
