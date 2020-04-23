@@ -1,0 +1,21 @@
+{
+  "name": "web_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "start": "lerna run start --stream"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  },
+  "dependencies": {
+    "@types/lodash": "4.14.150",
+    "@types/moment": "2.13.0",
+    "lodash": "4.17.15",
+    "moment": "2.24.0"
+  }
+}
