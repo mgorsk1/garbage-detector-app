@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run clean && npm run copy && parcel index.html --port 3000",
+    "start": "npm run clean && npm run copy && parcel index.html --port 8080",
     "copy": "cp -r images dist",
     "clean": "rm -rf dist && rm -rf .cache"
   },

@@ -18,7 +18,7 @@ const App = () => {
   const [category, setCategory] = useState<Category>(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:9000/subscribe");
+    ws.current = new WebSocket(`ws://${location.hostname}:9000/subscribe`);
     ws.current.onmessage = (e) => {
       clearTimeout(timer.current as NodeJS.Timeout);
       const data = _.attempt(() => JSON.parse(e.data), {});
