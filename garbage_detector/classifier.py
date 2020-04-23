@@ -102,7 +102,7 @@ class GarbageClassifier:
 
         classification = self._classify(image)
 
-        img_url = self._upload_image_to_gcp(image, classification)
+        self._upload_image_to_gcp(image, classification)
 
         self._notify_backend(classification)
 
