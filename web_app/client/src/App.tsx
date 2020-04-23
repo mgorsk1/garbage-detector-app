@@ -37,12 +37,12 @@ const App = () => {
   }, []);
 
   return (
-    <Container on={on}>
+    <Container hide={on}>
       <Styles />
       <Router>
         <Switch>
           <Route path="/home">
-            <HomePage category={category} on={on} />
+            <HomePage category={category} showNotification={on} />
           </Route>
           <Route path="/analyse">
             <AnalyticsPage />

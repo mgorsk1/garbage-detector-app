@@ -19,7 +19,7 @@ export const Styles = createGlobalStyle`
   }
 `;
 
-export const Container = styled.div<{ on: string }>`
+export const Container = styled.div<{ hide: boolean }>`
   width: 100vw;
   min-height: 100vh;
   transition: background 500ms ease-in-out;
@@ -36,8 +36,8 @@ export const Container = styled.div<{ on: string }>`
     background-image: url("https://images.unsplash.com/photo-1566636571155-8c44187a0ccb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2010&q=80");
     background-size: cover;
     transition: all 500ms ease-in-out;
-    opacity: ${props => props.on ? 0 : 1 };
-    filter: blur(${props => props.on ? '80px' : 0});
+    opacity: ${props => props.hide ? 0 : 1 };
+    filter: blur(${props => props.hide ? '80px' : 0});
   }
 `;
 

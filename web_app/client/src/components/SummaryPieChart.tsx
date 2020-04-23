@@ -50,21 +50,25 @@ const SummaryPieChart = ({ data }: Props) => {
   const formattedData: PieDatum[] = [
     {
       id: 'Plastic',
+      label: 'plastic',
       value: data.plastic,
       color: colors.water,
     },
     {
       id: 'Glass',
+      label: 'glass',
       value: data.glass,
       color: colors.brown,
     },
     {
       id: 'Non recyclable',
+      label: 'rest',
       value: data.rest,
       color: colors.grey,
     },
     {
       id: 'Paper',
+      label: 'paper',
       value: data.paper,
       color: colors.green,
     },

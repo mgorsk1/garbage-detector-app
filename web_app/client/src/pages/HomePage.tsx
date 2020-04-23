@@ -9,12 +9,12 @@ import { Clock, Time, Day, Meridiem, Modal } from "./HomePage.styles";
 
 interface Props {
   category: Category;
-  on: boolean;
+  showNotification: boolean;
 }
 
 const formatTwoDigits = num => ("0" + num).slice(-2);
 
-const HomePage = ({category, on}: Props) => {
+const HomePage = ({category, showNotification}: Props) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -27,21 +27,21 @@ const HomePage = ({category, on}: Props) => {
 
   return (
     <Page>
-      <Clock hidden={on}>
+      <Clock hidden={showNotification}>
         <Time>
           {hours}:{minutes}
           <Meridiem>{Number(hours) > 12 ? 'PM' : 'AM'}</Meridiem>
         </Time>
         <Day>{time.toDateString()}</Day>
       </Clock>
-      <Transition in={on} timeout={500}>
+      <Transition in={showNotification} timeout={500}>
         {(state) => (
           <Modal state={state}>
             <Notification category={category} state={state} />
           </Modal>
         )}
       </Transition>
-      <HomeButton invert={on} to="/analyse" text="Dashboard" icon={<Dashboard/>}/>
+      <HomeButton invert={showNotification} to="/analyse" text="Dashboard" icon={<Dashboard/>}/>
     </Page>
   );
 };
