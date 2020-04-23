@@ -10,7 +10,6 @@ from gpiozero import LED
 from garbage_detector import BASE_PATH
 from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
-from garbage_detector.utils.spinner import LEDBoardSpinner
 
 
 class GarbageClassifier:
@@ -101,7 +100,6 @@ class GarbageClassifier:
 
         return result
 
-    @LEDBoardSpinner
     def classify(self, image):
         """
         Classifies an image and notifies the backend of this. Process:
