@@ -10,6 +10,7 @@ from picamera.array import PiRGBArray
 from garbage_detector import config
 from garbage_detector.classifier import GarbageClassifier
 from garbage_detector.trigger import get_trigger_class
+from garbage_detector.utils.spinner import LEDBoardSpinner
 from garbage_detector.utils.spinner import LEDBoardSpinnerWithConfirmation
 
 trigger: Any
@@ -38,6 +39,7 @@ def setup():
     classifier = GarbageClassifier()
 
 
+@LEDBoardSpinner
 def classify(classifier: GarbageClassifier, image):
     return classifier.classify(image)
 
@@ -59,7 +61,7 @@ if __name__ == '__main__':
             logging.info(f'In range for: {in_range_for} s.')
 
             if in_range_for > int(config.trigger.delay):
-                classification = classifier.classify(image)
+                classification = classify(classifier, image)
 
                 classifier.notify(classification)
 
