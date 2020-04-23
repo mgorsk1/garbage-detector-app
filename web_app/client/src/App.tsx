@@ -6,20 +6,27 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Styles, Container } from "./App.styles";
-import { Category, Categories } from "./constants";
+import { Category, Categories, WsStatus } from "./constants";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import HomePage from "./pages/HomePage";
 import _ from "lodash";
+import WsSignal from "./components/WsSignal";
 
 const App = () => {
   const ws = useRef<WebSocket>(null);
   const timer = useRef<NodeJS.Timeout>(null);
   const [on, setOn] = useState(false);
+  const [status, setStatus] = useState(WsStatus.Connecting);
   const [category, setCategory] = useState<Category>(null);
 
   useEffect(() => {
-    ws.current = new WebSocket(`ws://${location.hostname}:9000/subscribe`);
-    ws.current.onmessage = (e) => {
+    const socket = new WebSocket(`ws://${location.hostname}:9000/subscribe`);
+
+    socket.onopen = () => setStatus(WsStatus.Connected);
+    socket.onclose = () => setStatus(WsStatus.Closed);
+    socket.onerror = () => setStatus(WsStatus.Error);
+
+    socket.onmessage = (e) => {
       clearTimeout(timer.current as NodeJS.Timeout);
       const data = _.attempt(() => JSON.parse(e.data), {});
       if (_.isEmpty(data)) return;
@@ -33,12 +40,15 @@ const App = () => {
       }
     };
 
-    return () => ws.current.close();
+    ws.current = socket;
+
+    return () => socket.close();
   }, []);
 
   return (
     <Container hide={on}>
       <Styles />
+      <WsSignal status={status}/>
       <Router>
         <Switch>
           <Route path="/home">
