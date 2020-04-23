@@ -18,9 +18,19 @@ leds:
   yellow: ${LEDS_YELLOW_PIN:-23}
   blue: ${LEDS_BLUE_PIN:-22}
 gcp:
+  project:
+    name: ${GCP_PROJECT_NAME:-experiment-week}
+  model:
+    name: ${GCP_MODEL_NAME:-garbage_model_h5_128_custom_prep}
+    version: ${GCP_MODEL_VERSION:-1}
   bucket:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
+  vision:
+    classification:
+      threshold: 40
 backend:
   scheme: ${BACKEND_SCHEME:-http}
   host: ${BACKEND_HOST:-34.91.179.51}
   port: ${BACKEND_PORT:-9000}
+classifier:
+  cls: ${CLASSIFIER_CLASS:-TensorflowServingGarbageClassifier}

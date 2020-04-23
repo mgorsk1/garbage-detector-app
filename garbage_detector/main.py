@@ -2,6 +2,7 @@ import logging
 import time
 from datetime import datetime
 from typing import Any
+from typing import Type  # noqa: TYP001
 
 import cv2
 from picamera import PiCamera
@@ -9,6 +10,7 @@ from picamera.array import PiRGBArray
 
 from garbage_detector import config
 from garbage_detector.classifier import GarbageClassifier
+from garbage_detector.classifier import get_classifier_class
 from garbage_detector.trigger import get_trigger_class
 from garbage_detector.utils.spinner import LEDBoardSpinner
 from garbage_detector.utils.spinner import LEDBoardSpinnerWithConfirmation
@@ -23,7 +25,7 @@ LED_MAPPING = dict(
 trigger: Any
 camera: Any
 raw_capture: Any
-classifier: GarbageClassifier
+classifier: Type[GarbageClassifier]
 
 
 @LEDBoardSpinnerWithConfirmation
@@ -43,12 +45,12 @@ def setup():
 
     trigger = get_trigger_class(config.trigger.cls)(**config.trigger.parameters)
 
-    classifier = GarbageClassifier()
+    classifier = get_classifier_class(config.classifier.cls)()
 
 
 @LEDBoardSpinner
-def classify(classifier: GarbageClassifier, image):
-    return classifier.classify(image)
+def classify(classifier: Type[GarbageClassifier], image):
+    return classifier.classify(image)  # type: ignore
 
 
 if __name__ == '__main__':
@@ -70,7 +72,7 @@ if __name__ == '__main__':
             if in_range_for > int(config.trigger.delay):
                 classification = classify(classifier, image)
 
-                classifier.notify(classification)
+                classifier.notify(classification)  # type: ignore
 
                 start = None
         else:

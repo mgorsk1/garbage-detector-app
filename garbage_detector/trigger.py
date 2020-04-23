@@ -73,8 +73,10 @@ class DistanceSensorTrigger(TriggerWithLedNotification):
 def get_trigger_class(class_name):
     if class_name == 'DistanceSensorTrigger':
         return DistanceSensorTrigger
-    else:
+    elif class_name == 'DummyTrigger':
         return DummyTrigger
+    else:
+        raise NotImplementedError(f'Provided class name does not exist: {class_name}')
 
     # try:
     #     TriggerClass = getattr(import_module('gargabe_detector.trigger'), class_name)

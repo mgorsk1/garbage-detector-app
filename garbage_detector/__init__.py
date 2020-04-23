@@ -1,4 +1,5 @@
 import logging
+from os import path
 
 from dotted.collection import DottedDict
 from piny import YamlLoader
@@ -16,3 +17,5 @@ config = DottedDict(
         path='/home/pi/Documents/Projects/garbage-detector-app/configs/app/default.yml',
     ).load(),
 )
+
+BASE_PATH = path.dirname(__file__) + '/..'
