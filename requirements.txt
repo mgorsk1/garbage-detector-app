@@ -1,6 +1,6 @@
 dotted==0.1.8
-google-cloud-storage==1.27.0
-google-cloud-vision
+google-cloud-storage==1.28.0
+google-cloud-vision==1.0.0
 gpiozero==1.5.1
 numpy==1.18.3
 opencv-contrib-python==4.1.0.25  # norot

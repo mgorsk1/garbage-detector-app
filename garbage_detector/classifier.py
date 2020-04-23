@@ -66,8 +66,8 @@ class GarbageClassifier:
 
         return photo_url
 
-    def _notify_backend(self, user, category, image):
-        json_payload = {'user': user, 'class': category, 'image': image}
+    def _notify_backend(self, category):
+        json_payload = {'category': category}
 
         logging.info(f'Sending payload to backend: {json_payload}')
 
@@ -82,15 +82,9 @@ class GarbageClassifier:
 
     def _prepare_image_for_model(self, image):
         resize_to = (2400, 1800)
-        # crop_to = (1450, 1450)
-        #
-        # up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
-        # left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
         image = cv2.flip(image, 0)
         image = cv2.resize(image, resize_to)
-
-        # image = image[up:down, left:right]
 
         return image
 
@@ -105,12 +99,10 @@ class GarbageClassifier:
         """
         logging.info('Starting classify process')
 
-        image_processed = self._prepare_image_for_model(image)
+        image = self._prepare_image_for_model(image)
 
-        classification = self._classify(image_processed)
+        classification = self._classify(image)
 
-        img_url = self._upload_image_to_gcp(image_processed, classification)
-
-        self._notify_backend('Mariusz', classification, img_url)
+        self._notify_backend(classification)
 
         return classification
