@@ -5,6 +5,7 @@ from time import sleep
 import cv2
 import numpy as np
 import requests
+import tensorflow as tf
 from gpiozero import LED
 
 from garbage_detector import config
@@ -88,7 +89,9 @@ class GarbageClassifier:
         image = cv2.resize(image, (800, 600))
 
         result = image[up:down, left:right]
-        result = cv2.resize(result, (128, 128))
+        result = cv2.resize(result, (224, 224))
+
+        result = tf.keras.applications.resnet50.preprocess_input(result)
 
         return result
 
