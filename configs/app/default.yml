@@ -28,7 +28,7 @@ gcp:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
   vision:
     classification:
-      threshold: 40
+      threshold: ${GCP_VISION_CLASSIFICATION_THRESHOLD:-40}
 backend:
   scheme: ${BACKEND_SCHEME:-http}
   host: ${BACKEND_HOST:-34.91.179.51}

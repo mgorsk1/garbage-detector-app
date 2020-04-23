@@ -41,7 +41,7 @@ class GoogleCloudVisionGarbageClassifier(GarbageClassifier):
         if result is not None:
             description, category, confidence = [result.get(x) for x in ['description', 'category', 'confidence']]
 
-            if confidence >= config.gcp.vision.classification.threshold:
+            if confidence >= int(config.gcp.vision.classification.threshold):
                 return category
 
                 logging.info(f'Image classified as: {category}')
