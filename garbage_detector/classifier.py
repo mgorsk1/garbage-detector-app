@@ -15,6 +15,19 @@ class GarbageClassifier:
 
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
+        self.led_mapping = dict(
+            paper=config.leds.green,
+            glass=config.leds.yellow,
+            plastic=config.leds.blue,
+            rest=config.leds.red,
+        )
+
+        self.categories_map = dict(
+            paper='paper',
+            plastic='plastic',
+            glass='glass',
+        )
+
     def _classify(self, image):
         image = np.ascontiguousarray(image)
 
@@ -29,6 +42,10 @@ class GarbageClassifier:
         result = self.classes[predictions.index(max(predictions))]
 
         logging.info(f'Image classified as: {result}')
+
+        result = self.categories_map.get(result, 'trash')
+
+        logging.info(f'Image mapped as: {result}')
         return result
 
     def _upload_image_to_gcp(self, image, classification):
@@ -59,7 +76,6 @@ class GarbageClassifier:
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
-        # image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
         result = image[up:down, left:right]
@@ -82,8 +98,10 @@ class GarbageClassifier:
 
         classification = self._classify(image)
 
-        img_url = self._upload_image_to_gcp(image, classification)
-
-        self._notify_backend(classification)
+        self._upload_image_to_gcp(image, classification)
 
         return classification
+
+    def notify(self, classification):
+        self._notify_backend(classification)
+        self._turn_on_led(classification)

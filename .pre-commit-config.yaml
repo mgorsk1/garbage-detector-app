@@ -75,6 +75,8 @@ repos:
           - .banditrc
           - '-ll'
           - '--recursive'
+          - '--skip'
+          - 'B108'
           - mock_data_uploader
   - repo: local
     hooks:
