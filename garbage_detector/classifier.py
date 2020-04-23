@@ -1,9 +1,11 @@
 import json
 import logging
+from time import sleep
 
 import cv2
 import numpy as np
 import requests
+from gpiozero import LED
 
 from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
@@ -68,6 +70,13 @@ class GarbageClassifier:
 
         logging.info(f'Backend notified with response: {r}')
         return r
+
+    def _turn_on_led(self, classification):
+        led = LED(self.led_mapping.get(classification))
+
+        led.on()
+        sleep(3)
+        led.off()
 
     def _prepare_image_for_model(self, image):
         resize_to = (800, 600)
