@@ -25,5 +25,5 @@ gcp:
       threshold: 40
 backend:
   scheme: ${BACKEND_SCHEME:-http}
-  host: ${BACKEND_HOST:-localhost}
+  host: ${BACKEND_HOST:-35.230.143.224}
   port: ${BACKEND_PORT:-9000}
