@@ -1,14 +1,17 @@
 import logging
 from json import loads
+from time import sleep
 
 import cv2
 import requests
 from google.cloud import vision
 from google.cloud.vision import types
+from gpiozero import LED
 
 from garbage_detector import BASE_PATH
 from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
+from garbage_detector.utils.spinner import LEDBoardSpinner
 
 
 class GarbageClassifier:
@@ -19,6 +22,13 @@ class GarbageClassifier:
             self.labels = loads(f.read())
 
         self.vision = vision.ImageAnnotatorClient()
+
+        self.led_mapping = dict(
+            paper=config.leds.blue,
+            glass=config.leds.green,
+            plastic=config.leds.yellow,
+            rest=config.leds.red,
+        )
 
     def _classify(self, image):
         frame_bytes = cv2.imencode('.jpg', image)[1].tostring()
@@ -80,14 +90,21 @@ class GarbageClassifier:
         logging.info(f'Backend notified with response: {r}')
         return r
 
+    def _turn_on_led(self, classification):
+        led = LED(self.led_mapping.get(classification))
+
+        led.on()
+        sleep(3)
+        led.off()
+
     def _prepare_image_for_model(self, image):
         resize_to = (2400, 1800)
 
-        image = cv2.flip(image, 0)
         image = cv2.resize(image, resize_to)
 
         return image
 
+    @LEDBoardSpinner
     def classify(self, image):
         """
         Classifies an image and notifies the backend of this. Process:
@@ -105,6 +122,8 @@ class GarbageClassifier:
 
         self._upload_image_to_gcp(image, classification)
 
-        self._notify_backend(classification)
-
         return classification
+
+    def notify(self, classification):
+        self._notify_backend(classification)
+        self._turn_on_led(classification)
