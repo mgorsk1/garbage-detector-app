@@ -23,9 +23,9 @@ class GarbageClassifier:
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
         self.led_mapping = dict(
-            paper=config.leds.blue,
-            glass=config.leds.green,
-            plastic=config.leds.yellow,
+            paper=config.leds.green,
+            glass=config.leds.yellow,
+            plastic=config.leds.blue,
             rest=config.leds.red,
         )
 
