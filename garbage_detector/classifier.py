@@ -1,13 +1,16 @@
 import logging
+from time import sleep
 
 import cv2
 import googleapiclient.discovery
 import requests
 from google.oauth2 import service_account
+from gpiozero import LED
 
 from garbage_detector import BASE_PATH
 from garbage_detector import config
 from garbage_detector.utils.gcp import GCP
+from garbage_detector.utils.spinner import LEDBoardSpinner
 
 
 class GarbageClassifier:
@@ -20,7 +23,12 @@ class GarbageClassifier:
         self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
-        self.categories_map = dict(glass='glass', plastic='plastic', paper='paper')
+        self.led_mapping = dict(
+            paper=config.leds.blue,
+            glass=config.leds.green,
+            plastic=config.leds.yellow,
+            rest=config.leds.red,
+        )
 
     def _classify(self, image):
         image = image.tolist()
@@ -72,6 +80,13 @@ class GarbageClassifier:
         logging.info(f'Backend notified with response: {r}')
         return r
 
+    def _turn_on_led(self, classification):
+        led = LED(self.led_mapping.get(classification))
+
+        led.on()
+        sleep(3)
+        led.off()
+
     def _prepare_image_for_model(self, image):
         resize_to = (800, 600)
         crop_to = (250, 250)
@@ -79,7 +94,6 @@ class GarbageClassifier:
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
-        # image = cv2.flip(image, 0)
         image = cv2.resize(image, (800, 600))
 
         result = image[up:down, left:right]
@@ -87,6 +101,7 @@ class GarbageClassifier:
 
         return result
 
+    @LEDBoardSpinner
     def classify(self, image):
         """
         Classifies an image and notifies the backend of this. Process:
@@ -104,6 +119,8 @@ class GarbageClassifier:
 
         self._upload_image_to_gcp(image, classification)
 
-        self._notify_backend(classification)
-
         return classification
+
+    def notify(self, classification):
+        self._notify_backend(classification)
+        self._turn_on_led(classification)
