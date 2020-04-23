@@ -2,7 +2,6 @@ import logging
 
 import cv2
 import googleapiclient.discovery
-import numpy as np
 import requests
 from google.oauth2 import service_account
 
@@ -20,6 +19,8 @@ class GarbageClassifier:
 
         self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
+
+        self.categories_map = dict(metal='metal', plastic='plastic', paper='paper')
 
     def _classify(self, image):
         image = image.tolist()
@@ -41,6 +42,11 @@ class GarbageClassifier:
         result = self.classes[predictions.index(max(predictions))]
 
         logging.info(f'Image classified as: {result}')
+
+        result = self.categories_map.get(result, 'trash')
+
+        logging.info(f'Image mapped as: {result}')
+
         return result
 
     def _upload_image_to_gcp(self, image, classification):
