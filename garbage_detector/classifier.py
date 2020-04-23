@@ -20,7 +20,7 @@ class GarbageClassifier:
         self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
         self.classes = ['metal', 'paper', 'glass', 'plastic', 'cardboard']
 
-        self.categories_map = dict(metal='metal', plastic='plastic', paper='paper')
+        self.categories_map = dict(glass='glass', plastic='plastic', paper='paper')
 
     def _classify(self, image):
         image = image.tolist()
