@@ -8,6 +8,7 @@ const Nav = styled.div<{invert: boolean}>`
   left: 50%;
   transform: translateX(-50%);
   color: ${props => props.invert ? '#222' : '#fff'};
+  z-index: 10;
 `;
 
 const NavItem = styled.div`

@@ -35,7 +35,7 @@ const ProgressLineChart = ({ data }: Props) => {
       top: 20,
       right: 20,
       bottom: 30,
-      left: 30
+      left: 40
     }}
     pointColor="white"
     pointBorderWidth={2}
