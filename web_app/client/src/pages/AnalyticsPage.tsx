@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Page } from "../App.styles";
+import { Page, colors } from "../App.styles";
 import {
   emptyProgressStats,
   emptyStats,
@@ -27,11 +27,14 @@ const Heading = styled.h1`
 `;
 
 const Title = styled.h1`
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 900;
   margin: 20px;
   color: #222;
   text-align: center;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 `;
 
 const Charts = styled.div`
@@ -55,7 +58,7 @@ const ChartContainer = styled.div<{ area: string }>`
 `;
 
 const ChartInnerContainer = styled.div`
-  padding: 20px;
+  padding: 30px;
   height: 100%;
 `;
 
@@ -65,13 +68,43 @@ interface ChartProps {
   children: React.ReactNode;
 }
 
-const Chart = ({ area, children }: ChartProps) => {
+const Chart = ({ area, title, children }: ChartProps) => {
   return (
     <ChartContainer area={area}>
+      <Title>{title}</Title>
       <ChartInnerContainer>{children}</ChartInnerContainer>
     </ChartContainer>
   );
 };
+
+const Legend = styled.ul`
+  list-style: none;
+  padding: 0;
+  display: flex;
+  font-size: 14px;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  justify-content: flex-end;
+`;
+
+const Item = styled.li`
+  margin: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row-reverse;
+`;
+
+const Icon = styled.span`
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background: ${(props) => props.color};
+  margin-left: 8px;
+`;
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(emptyStats);
@@ -94,6 +127,24 @@ const AnalyticsPage = () => {
     <Page>
       <Content>
         <Heading>Last week</Heading>
+        <Legend>
+          <Item>
+            <Icon color={colors.green} />
+            Paper
+          </Item>
+          <Item>
+            <Icon color={colors.water} />
+            Plastic
+          </Item>
+          <Item>
+            <Icon color={colors.brown} />
+            Glass
+          </Item>
+          <Item>
+            <Icon color={colors.grey} />
+            Rest
+          </Item>
+        </Legend>
         <Charts>
           <Chart area="top-left" title="Summary">
             <SummaryPieChart data={stats} />
@@ -101,7 +152,7 @@ const AnalyticsPage = () => {
           <Chart area="bottom-left" title="Progress">
             <ProgressLineChart data={progressStats} />
           </Chart>
-          <Chart area="right" title="Environment points collected">
+          <Chart area="right" title="Environment points per day">
             <WeekBarChart data={timeStats} />
           </Chart>
         </Charts>
