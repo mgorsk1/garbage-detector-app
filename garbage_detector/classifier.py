@@ -26,7 +26,7 @@ class GarbageClassifier:
             paper=config.leds.green,
             glass=config.leds.yellow,
             plastic=config.leds.blue,
-            rest=config.leds.red,
+            trash=config.leds.red,
         )
 
     def _classify(self, image):
