@@ -22,15 +22,18 @@ class GoogleCloudAIGarbageClassifier(GarbageClassifier):
         self.ai = googleapiclient.discovery.build('ml', 'v1', credentials=credentials)
 
     def _prepare_image_for_model(self, image):
+        # @todo parametrize this
         resize_to = (800, 600)
         crop_to = (250, 250)
 
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
+        # @todo parametrize this
         image = cv2.resize(image, (800, 600))
 
         result = image[up:down, left:right]
+        # @todo parametrize this
         result = cv2.resize(result, (128, 128))
 
         return result
