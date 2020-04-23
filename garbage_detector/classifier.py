@@ -29,6 +29,13 @@ class GarbageClassifier:
             rest=config.leds.red,
         )
 
+        self.categories_map = dict(
+            paper='paper',
+            plastic='plastic',
+            glass='glass',
+            cardboard='paper',
+        )
+
     def _classify(self, image):
         image = image.tolist()
 
