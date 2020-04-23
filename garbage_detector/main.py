@@ -1,11 +1,9 @@
 import logging
 import time
 from datetime import datetime
-from time import sleep
 from typing import Any
 
 import cv2
-from gpiozero import LED
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 
@@ -48,16 +46,6 @@ def setup():
     classifier = GarbageClassifier()
 
 
-def turn_on_led(classification):
-    led = LED(LED_MAPPING.get(classification))
-
-    led.on()
-
-    sleep(3)
-
-    led.off()
-
-
 @LEDBoardSpinner
 def classify(classifier: GarbageClassifier, image):
     return classifier.classify(image)
@@ -82,7 +70,7 @@ if __name__ == '__main__':
             if in_range_for > int(config.trigger.delay):
                 classification = classify(classifier, image)
 
-                turn_on_led(classification)
+                classifier.notify(classification)
 
                 start = None
         else:

@@ -8,7 +8,7 @@ trigger:
   parameters:
     echo: ${TRIGGER_PARAMETERS_ECHO:-20}
     trigger: ${TRIGGER_PARAMETERS_TRIGGER:-26}
-    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-45}
+    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-25}
     distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-65}
     led: ${TRIGGER_PARAMETERS_LED:-24}
   delay: ${TRIGGER_DELAY:-3}
@@ -22,5 +22,5 @@ gcp:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
 backend:
   scheme: ${BACKEND_SCHEME:-http}
-  host: ${BACKEND_HOST:-localhost}
+  host: ${BACKEND_HOST:-34.91.179.51}
   port: ${BACKEND_PORT:-9000}

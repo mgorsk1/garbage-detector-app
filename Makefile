@@ -18,4 +18,8 @@ install:
 	pip3 install -r requirements.txt
 
 run:
-	@echo "Running..."
+	. .venv/bin/activate
+	export PYTHONPATH=$PWD
+	export GOOGLE_APPLICATION_CREDENTIALS=/home/pi/Documents/Projects/garbage-detector-app/resources/keys/storage.json
+
+	python3 garbage_detector/main.py
