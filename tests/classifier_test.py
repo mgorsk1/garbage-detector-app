@@ -1,7 +1,7 @@
 import os
 
 from garbage_detector import config
-from garbage_detector.classifier import get_classifier_class
+from garbage_detector.classifier.imports import get_classifier_class
 
 # Determine current dir
 current_dir = os.path.dirname(__file__)

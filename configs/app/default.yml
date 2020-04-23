@@ -3,6 +3,7 @@ camera:
     width: ${CAMERA_RESOLUTION_WIDTH:-640}
     height: ${CAMERA_RESOLUTION_HEIGHT:-480}
   framerate: ${CAMERA_FRAMERATE:-10}
+  display: ${CAMERA_DISPLAY:-false}
 trigger:
   cls: ${TRIGGER_CLS:-DistanceSensorTrigger}
   parameters:
@@ -33,4 +34,4 @@ backend:
   host: ${BACKEND_HOST:-34.91.179.51}
   port: ${BACKEND_PORT:-9000}
 classifier:
-  cls: ${CLASSIFIER_CLASS:-TensorflowServingGarbageClassifier}
+  cls: ${CLASSIFIER_CLS:-TensorflowServingGarbageClassifier}
