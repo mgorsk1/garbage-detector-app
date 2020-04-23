@@ -103,6 +103,8 @@ class GarbageClassifier:
 
         classification = self._classify(image)
 
+        self._upload_image_to_gcp(image, classification)
+
         self._notify_backend(classification)
 
         return classification
