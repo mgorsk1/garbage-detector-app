@@ -13,13 +13,19 @@ setup:
 	sudo apt-get install -y python3-dev
 
 install:
-	python3 -m venv .venv
-	. .venv/bin/activate
-	pip3 install -r requirements.txt
+	( \
+	python3 -m venv .venv; \
+	. .venv/bin/activate; \
+	pip3 install -r requirements.txt; \
+	)
 
 run:
-	. .venv/bin/activate
-	export PYTHONPATH=$PWD
-	export GOOGLE_APPLICATION_CREDENTIALS=/home/pi/Documents/Projects/garbage-detector-app/resources/keys/storage.json
+	( \
+	. .venv/bin/activate; \
+	export PYTHONPATH=$PWD; \
+	export GOOGLE_APPLICATION_CREDENTIALS=/home/pi/Documents/Projects/garbage-detector-app/resources/keys/storage.json; \
+	python3 garbage_detector/main.py; \
+	)
 
-	python3 garbage_detector/main.py
+tfserving_run:
+	docker run -p 8500:8501 --mount type=bind,source=/home/mariusz/tf2,target=/models/gd -e MODEL_NAME=gd -t tensorflow/serving
