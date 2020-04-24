@@ -8,14 +8,11 @@ import tensorflow as tf
 
 from garbage_detector import config
 from garbage_detector.classifier import GarbageClassifier
-from garbage_detector.utils.gcp import GCP
 
 
 class TensorflowServingGarbageClassifier(GarbageClassifier):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.gcp = GCP()
 
     def _prepare_image_for_model(self, image):
         resize_to = (1200, 900)

@@ -7,14 +7,11 @@ from google.oauth2 import service_account
 from garbage_detector import BASE_PATH
 from garbage_detector import config
 from garbage_detector.classifier import GarbageClassifier
-from garbage_detector.utils.gcp import GCP
 
 
 class GoogleCloudAIGarbageClassifier(GarbageClassifier):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.gcp = GCP()
 
         sa_file = f'{BASE_PATH}/resources/keys/ai.json'
         credentials = service_account.Credentials.from_service_account_file(sa_file)

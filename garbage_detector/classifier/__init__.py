@@ -7,6 +7,7 @@ import requests
 from gpiozero import LED
 
 from garbage_detector import config
+from garbage_detector.utils.gcp import GCP
 
 
 class GarbageClassifier(ABC):
@@ -26,6 +27,8 @@ class GarbageClassifier(ABC):
             glass='glass',
             cardboard='paper',
         )
+
+        self.gcp = GCP()
 
     @abstractmethod
     def _prepare_image_for_model(self, image):
