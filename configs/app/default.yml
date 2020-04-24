@@ -29,9 +29,22 @@ gcp:
   vision:
     classification:
       threshold: ${GCP_VISION_CLASSIFICATION_THRESHOLD:-40}
+    image:
+      size:
+        width: ${GCP_VISION_IMAGE_SIZE_WIDTH:-2400}
+        height: ${GCP_VISION_IMAGE_SIZE_HEIGHT:-1800}
 backend:
   scheme: ${BACKEND_SCHEME:-http}
   host: ${BACKEND_HOST:-34.91.179.51}
   port: ${BACKEND_PORT:-9000}
+tfserving:
+  scheme: ${TFSERVING_SCHEME:-http}
+  host: ${TFSERVING_HOST:-192.168.0.17}
+  port: ${TFSERVING_PORT:-8500}
+  model:
+    name: ${TFSERVING_MODEL_NAME:-gd}
 classifier:
   cls: ${CLASSIFIER_CLS:-TensorflowServingGarbageClassifier}
+image:
+  final_size: ${IMAGE_FINAL_SIZE:-224}
+  crop_factor: ${IMAGE_CROP_FACTOR:-.33}

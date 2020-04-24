@@ -20,8 +20,7 @@ class GoogleCloudVisionGarbageClassifier(GarbageClassifier):
         self.vision = vision.ImageAnnotatorClient()
 
     def _prepare_image_for_model(self, image):
-        # @todo parametrize this
-        resize_to = (2400, 1800)
+        resize_to = (int(config.vision.image.size.width), int(config.vision.image.size.height))
 
         image = cv2.resize(image, resize_to)
 

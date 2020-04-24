@@ -6,6 +6,7 @@ import numpy as np
 import requests
 import tensorflow as tf
 
+from garbage_detector import config
 from garbage_detector.classifier import GarbageClassifier
 from garbage_detector.utils.gcp import GCP
 
@@ -17,31 +18,34 @@ class TensorflowServingGarbageClassifier(GarbageClassifier):
         self.gcp = GCP()
 
     def _prepare_image_for_model(self, image):
-        # @todo parametrize this
-        resize_to = (800, 600)
-        crop_to = (250, 250)
+        resize_to = (1200, 900)
+
+        crop_to = (
+            int(resize_to[0]*float(config.image.crop_factor)),
+            int(resize_to[1]*float(config.image.crop_factor)),
+        )
 
         up, down = int((resize_to[1] / 2) - (crop_to[1] / 2)), int((resize_to[1] / 2) + (crop_to[1] / 2))
         left, right = int((resize_to[0] / 2) - (crop_to[0] / 2)), int((resize_to[0] / 2) + (crop_to[0] / 2))
 
-        # @todo parametrize this
-        image = cv2.resize(image, (800, 600))
+        image = cv2.resize(image, resize_to)
 
         result = image[up:down, left:right]
 
-        # @todo parametrize this
-        result = cv2.resize(result, (224, 224))
-
-        result = tf.keras.applications.resnet50.preprocess_input(result)
+        result = cv2.resize(result, (config.image.final_size, config.image.final_size))
 
         return result
 
     def _classify(self, image):
+        image = tf.keras.applications.resnet50.preprocess_input(image)
+
         image = np.ascontiguousarray(image)
 
-        # @todo parametrize this
+        serving_url = f'{config.tfserving.scheme}://{config.tfserving.host}:{config.tfserving.port}'
+        serving_endpoint = f'v1/models/{config.tfserving.model.name}:predict'
+
         request = requests.post(
-            'http://192.168.0.17:8500/v1/models/gd:predict',
+            f'{serving_url}/{serving_endpoint}',
             data=json.dumps(dict(instances=[image.tolist()])),
         )
 

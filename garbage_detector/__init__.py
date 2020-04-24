@@ -12,11 +12,10 @@ LOG_LEVEL = 'INFO'
 logging.basicConfig(format=LOG_FORMAT)
 logging.getLogger().setLevel(LOG_LEVEL)
 
-# @todo parametrize this
+BASE_PATH = path.dirname(__file__) + '/..'
+
 config = DottedDict(
     YamlLoader(
-        path='/home/pi/Documents/Projects/garbage-detector-app/configs/app/default.yml',
+        path=f'{BASE_PATH}/configs/app/default.yml',
     ).load(),
 )
-
-BASE_PATH = path.dirname(__file__) + '/..'
