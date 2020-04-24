@@ -31,7 +31,7 @@ export const Meridiem = styled.span`
   margin-left: 20px;
   text-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   `
-  
+
   export const Day = styled.span`
   font-size: 30px;
   margin-top: 50px;
