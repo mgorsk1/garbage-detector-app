@@ -22,7 +22,7 @@ install:
 run:
 	( \
 	. .venv/bin/activate; \
-	export PYTHONPATH=$PWD; \
+	export PYTHONPATH=$(shell pwd); \
 	export GOOGLE_APPLICATION_CREDENTIALS=/home/pi/Documents/Projects/garbage-detector-app/resources/keys/storage.json; \
 	python3 garbage_detector/main.py; \
 	)
