@@ -48,11 +48,16 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
 
         response = self.model.predict(self.model_full_id, payload, params)
 
-        _result = response.payload[0]
+        logging.info(f'Response received: {response.__dict__}')
 
-        result, score = _result.display_name, _result.classification.score
+        try:
+            _result = response.payload[0]
 
-        logging.info(f'Predicted class name: {result}')
-        logging.info(f'Predicted class score: {score}')
+            result, score = _result.display_name, _result.classification.score
 
-        return result
+            logging.info(f'Predicted class name: {result}')
+            logging.info(f'Predicted class score: {score}')
+
+            return result
+        except IndexError:
+            return 'trash'
