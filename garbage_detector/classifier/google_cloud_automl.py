@@ -48,8 +48,11 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
 
         response = self.model.predict(self.model_full_id, payload, params)
 
-        for result in response.payload:
-            logging.info(f'Predicted class name: {result.display_name}')
-            logging.info(f'Predicted class score: {result.classification.score}')
+        _result = response.payload[0]
 
-            return result.display_name
+        result, score = _result.display_name, _result.classification.score
+
+        logging.info(f'Predicted class name: {result}')
+        logging.info(f'Predicted class score: {score}')
+
+        return result
