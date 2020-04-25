@@ -48,7 +48,7 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
 
         response = self.model.predict(self.model_full_id, payload, params)
 
-        logging.info(f'Response received: {response.__dict__}')
+        logging.info(f'Payload received: {response.payload}')
 
         try:
             _result = response.payload[0]
