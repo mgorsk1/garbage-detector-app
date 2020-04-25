@@ -29,6 +29,7 @@ gcp:
   automl:
     model:
       id: ${GCP_AUTOML_MODEL_ID:-ICN4013336188638199808}
+    threshold: 0.6
   bucket:
     name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
   vision:

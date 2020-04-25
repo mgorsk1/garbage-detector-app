@@ -44,12 +44,12 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
         automl_image = automl.types.Image(image_bytes=frame_bytes)
         payload = automl.types.ExamplePayload(image=automl_image)
 
-        params = {'score_threshold': '0.6'}
+        params = {'score_threshold': config.gcp.automl.threshold}
 
         response = self.model.predict(self.model_full_id, payload, params)
-
-        print('Prediction results:')
 
         for result in response.payload:
             logging.info(f'Predicted class name: {result.display_name}')
             logging.info(f'Predicted class score: {result.classification.score}')
+
+            return result.display_name
