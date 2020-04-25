@@ -40,7 +40,7 @@ class GoogleCloudAIGarbageClassifier(GarbageClassifier):
     def _classify(self, image):
         image = image.tolist()
 
-        name = f'projects/{config.gcp.project.name}/models/{config.gcp.model.name}'
+        name = f'projects/{config.gcp.project.name}/models/{config.gcp.ai.model.name}'
 
         response = self.ai.projects().predict(
             name=name,
@@ -57,9 +57,5 @@ class GoogleCloudAIGarbageClassifier(GarbageClassifier):
         result = self.classes[predictions.index(max(predictions))]
 
         logging.info(f'Image classified as: {result}')
-
-        result = self.categories_map.get(result, 'trash')
-
-        logging.info(f'Image mapped as: {result}')
 
         return result
