@@ -54,6 +54,7 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
             _result = response.payload[0]
 
             result, score = _result.display_name, _result.classification.score
+            result = self.categories_map.get(result, 'trash')
 
             logging.info(f'Predicted class name: {result}')
             logging.info(f'Predicted class score: {score}')
