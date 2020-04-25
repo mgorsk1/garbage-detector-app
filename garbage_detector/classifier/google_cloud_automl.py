@@ -1,4 +1,3 @@
-import base64
 import logging
 
 import cv2
@@ -40,10 +39,9 @@ class GoogleCloudAutoMLGarbageClassifier(GarbageClassifier):
         return result
 
     def _classify(self, image):
-        buffer = cv2.imencode('.jpg', image)
-        image_bytes = base64.b64encode(buffer)
+        frame_bytes = cv2.imencode('.jpg', image)[1].tostring()
 
-        automl_image = automl.types.Image(image_bytes=image_bytes)
+        automl_image = automl.types.Image(image_bytes=frame_bytes)
         payload = automl.types.ExamplePayload(image=automl_image)
 
         params = {'score_threshold': '0.6'}
