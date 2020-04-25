@@ -58,8 +58,4 @@ class GoogleCloudAIGarbageClassifier(GarbageClassifier):
 
         logging.info(f'Image classified as: {result}')
 
-        result = self.categories_map.get(result, 'trash')
-
-        logging.info(f'Image mapped as: {result}')
-
         return result

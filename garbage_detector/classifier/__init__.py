@@ -66,6 +66,13 @@ class GarbageClassifier(ABC):
         sleep(3)
         led.off()
 
+    def _map_classification(self, classification):
+        result = self.categories_map.get(classification, 'trash')
+
+        logging.info(f'Classification: {classification} mapped as: {result}')
+
+        return result
+
     def classify(self, image):
         """
         Classifies an image and notifies the backend of this. Process:
@@ -79,7 +86,8 @@ class GarbageClassifier(ABC):
 
         image = self._prepare_image_for_model(image)
 
-        classification = self._classify(image)
+        _classification = self._classify(image)
+        classification = self._map_classification(_classification)
 
         self._upload_image_to_gcp(image, classification)
 
