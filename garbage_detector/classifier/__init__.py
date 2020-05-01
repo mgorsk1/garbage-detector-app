@@ -3,6 +3,7 @@ from abc import ABC
 from abc import abstractmethod
 from time import sleep
 
+import numpy as np
 import requests
 from gpiozero import LED
 
@@ -96,3 +97,8 @@ class GarbageClassifier(ABC):
     def notify(self, classification):
         self._notify_backend(classification)
         self._turn_on_led(classification)
+
+    def softmax(self, input: list) -> list:
+        e_x = np.exp(input - np.max(input))
+
+        return e_x / e_x.sum(axis=0)

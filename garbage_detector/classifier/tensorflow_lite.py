@@ -21,6 +21,8 @@ class TensorflowLiteGarbageClassifier(GarbageClassifier):
 
         self.labels = open(f'{BASE_PATH}/resources/models/tflite/{config.tflite.model.name}/dict.txt').readlines()
 
+        self.labels = [label.strip() for label in self.labels]
+
     def _prepare_image_for_model(self, image):
         resize_to = (1200, 900)
 
@@ -52,11 +54,15 @@ class TensorflowLiteGarbageClassifier(GarbageClassifier):
 
         output_data = self.interpreter.get_tensor(output_details[0]['index'])
 
-        results = np.squeeze(output_data)
+        _results = np.squeeze(output_data).tolist()
 
-        top_k = results.argsort()[-5:][::-1]
+        results = dict(zip(self.labels, self.softmax(_results)))
 
-        result = self.labels[top_k[0]]
+        results = {k: v for k, v in sorted(results.items(), key=lambda item: item[1], reverse=True)}
+
+        logging.info(f'Received results: {results}')
+
+        result = list(results.keys())[0]
 
         logging.info(f'Image classified as: {result}')
 
