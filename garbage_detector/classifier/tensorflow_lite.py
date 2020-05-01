@@ -36,7 +36,7 @@ class TensorflowLiteGarbageClassifier(GarbageClassifier):
 
         result = image[up:down, left:right]
 
-        result = cv2.resiargs.model_fileze(result, (int(config.image.final_size), int(config.image.final_size)))
+        result = cv2.resize(result, (int(config.image.final_size), int(config.image.final_size)))
 
         return result
 
