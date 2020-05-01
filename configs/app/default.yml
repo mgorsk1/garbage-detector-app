@@ -54,7 +54,7 @@ image:
   final_size: ${IMAGE_FINAL_SIZE:-224}
   crop_factor: ${IMAGE_CROP_FACTOR:-.33}
   flip: ${IMAGE_FLIP:-true}
-  display: ${CAMERA_DISPLAY:-false}
+  display: ${IMAGE_DISPLAY:-false}
 tflite:
   model:
     name: ${TFLITE_MODEL_NAME:-default}
