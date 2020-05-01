@@ -67,7 +67,7 @@ class GarbageClassifier(ABC):
         led.off()
 
     def _map_classification(self, classification):
-        result = self.categories_map.get(classification, 'trash')
+        result = self.categories_map.get(classification.strip(), 'trash')
 
         logging.info(f'Classification: {classification} mapped as: {result}')
 
