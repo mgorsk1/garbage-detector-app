@@ -77,13 +77,3 @@ def get_trigger_class(class_name):
         return DummyTrigger
     else:
         raise NotImplementedError(f'Provided class name does not exist: {class_name}')
-
-    # try:
-    #     TriggerClass = getattr(import_module('gargabe_detector.trigger'), class_name)
-
-    #     return TriggerClass
-    # except Exception as e:
-    #     print(e.args)
-    #     logging.warning('Class {class_name} not found, defaulting to DummyTrigger')
-
-    #     return DummyTrigger

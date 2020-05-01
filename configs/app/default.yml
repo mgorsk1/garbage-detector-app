@@ -3,7 +3,6 @@ camera:
     width: ${CAMERA_RESOLUTION_WIDTH:-640}
     height: ${CAMERA_RESOLUTION_HEIGHT:-480}
   framerate: ${CAMERA_FRAMERATE:-10}
-  display: ${CAMERA_DISPLAY:-false}
 trigger:
   cls: ${TRIGGER_CLS:-DistanceSensorTrigger}
   parameters:
@@ -22,6 +21,8 @@ gcp:
   project:
     name: ${GCP_PROJECT_NAME:-experiment-week}
     region: ${GCP_REGION:-us-central1}
+  bucket:
+    name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
   ai:
     model:
       name: ${GCP_AI_MODEL_NAME:-garbage_model_h5_128_custom_prep}
@@ -30,8 +31,6 @@ gcp:
     model:
       id: ${GCP_AUTOML_MODEL_ID:-ICN4013336188638199808}
     threshold: 0.6
-  bucket:
-    name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
   vision:
     classification:
       threshold: ${GCP_VISION_CLASSIFICATION_THRESHOLD:-40}
@@ -54,3 +53,8 @@ classifier:
 image:
   final_size: ${IMAGE_FINAL_SIZE:-224}
   crop_factor: ${IMAGE_CROP_FACTOR:-.33}
+  flip: ${IMAGE_FLIP:-true}
+  display: ${CAMERA_DISPLAY:-false}
+tflite:
+  model:
+    name: ${TFLITE_MODEL_NAME:-default}

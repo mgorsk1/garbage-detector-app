@@ -60,7 +60,10 @@ if __name__ == '__main__':
     start = None
 
     for frame in camera.capture_continuous(raw_capture, format='bgr', use_video_port=True):
-        image = cv2.flip(frame.array, 0)
+        if strtobool(config.image.flip):
+            image = cv2.flip(frame.array, 0)
+        else:
+            image = frame
 
         if trigger.check():
             if start is None:
@@ -79,7 +82,7 @@ if __name__ == '__main__':
         else:
             start = None
 
-        if strtobool(config.camera.display):
+        if strtobool(config.image.display):
             cv2.imshow('Frame', image)
 
         key = cv2.waitKey(1) & 0xFF
