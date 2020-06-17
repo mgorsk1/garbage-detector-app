@@ -1,5 +1,0 @@
-runtime: custom
-env: flex
-network:
-  forwarded_ports:
-    - 9000
