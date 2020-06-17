@@ -1,6 +1,0 @@
-client/node_modules
-client/dist
-client/.cache
-server/node_modules
-server/dist
-server/.cache
