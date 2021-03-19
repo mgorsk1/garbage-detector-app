@@ -1,13 +1,13 @@
 dotted==0.1.8
-google-api-python-client==1.8.2
+google-api-python-client==1.9.3
 google-cloud-automl==0.10.0
-google-cloud-storage==1.28.0
+google-cloud-storage==1.29.0
 google-cloud-vision==1.0.0
 gpiozero==1.5.1
-numpy==1.18.3
+numpy==1.18.5
 opencv-contrib-python==4.1.0.25  # norot
 picamera==1.13
 pigpio==1.46
 piny==0.6.0
-requests==2.23.0
+requests==2.24.0
 RPi.GPIO==0.7.0

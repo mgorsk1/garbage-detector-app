@@ -1,9 +1,10 @@
 import os
+
 import numpy as np
 from tensorflow import keras
 
 
-class MyPredictor(object):
+class MyPredictor:
     """An example Predictor for an AI Platform custom prediction routine."""
 
     def __init__(self, model):

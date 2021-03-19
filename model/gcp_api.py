@@ -25,14 +25,14 @@ def predict_json(project, model, instances, service=SERVICE, version=None):
     """
     # Create the AI Platform service object.
     # To authenticate set the environment variable
-    name = 'projects/{}/models/{}'.format(project, model)
+    name = f'projects/{project}/models/{model}'
 
     if version is not None:
-        name += '/versions/{}'.format(version)
+        name += f'/versions/{version}'
 
     response = service.projects().predict(
         name=name,
-        body={'instances': instances}
+        body={'instances': instances},
     ).execute()
 
     if 'error' in response:

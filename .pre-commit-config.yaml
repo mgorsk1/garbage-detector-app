@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.7
+  python: python3.6
 default_stages:
   - commit
   - push
@@ -50,7 +50,7 @@ repos:
         args:
           - '--py36-plus'
   - repo: 'https://github.com/pre-commit/mirrors-mypy'
-    rev: v0.761
+    rev: v0.780
     hooks:
       - id: mypy
         args:
@@ -78,11 +78,3 @@ repos:
           - '--skip'
           - 'B108'
           - mock_data_uploader
-  - repo: local
-    hooks:
-    - id: piprot
-      name: Check if using latest dependencies
-      entry: piprot requirements.txt
-      language: python
-      types: [python]
-      additional_dependencies: ['piprot==0.9.11']
