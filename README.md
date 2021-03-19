@@ -72,7 +72,7 @@ With this product, he classification is semi-automatic - we query model for `obj
 
 Click for the youtube video:
 
-[![Click for demo](http://img.youtube.com/vi/txgXTiYY7A4/0.jpg)](http://www.youtube.com/watch?v=txgXTiYY7A4 "Garbage Detector - Demo")
+[![Click for demo](http://img.youtube.com/vi/3RRq7g5ISOg/0.jpg)](https://www.youtube.com/watch?v=3RRq7g5ISOg "Garbage Detector - Demo")
 
 ### Contributors
 
