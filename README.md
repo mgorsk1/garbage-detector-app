@@ -27,11 +27,11 @@ Our smart bin is a device powered by Raspberry Pi with several integrations, nam
 The app lies within `garbage_detector`. It's a fully configurable, simple process orchestrating interaction between
 user, classification mechanism and notification mechanism.
 
-#### Classifiers
+### Classifiers
 
 Currently following classifiers are supported:
 
-##### Tensorflow Serving
+#### Tensorflow Serving
 
 Tensorflow Serving is a service enabling accessing Tensorflow Models through REST API.
 
@@ -39,7 +39,7 @@ It is configurable through `tfsevring` section.
 
 If you have Tensorflow Serving instance with classification model deployed, you can make configure Garbage Detector to classify your images with it's REST API endpoint.
 
-##### [GCP AutoML Vision](https://cloud.google.com/vision/overview/docs#automl-vision)
+#### [GCP AutoML Vision](https://cloud.google.com/vision/overview/docs#automl-vision)
 
 GCP AutoML Vision is a MLaaS offering in Google Cloud Platform, providing easy way to train and deploy your model.
 
@@ -47,7 +47,7 @@ It's configurable through `gcp.automl` section.
 
 If your classification model was deployed to AutoML Vision, you can configure Garbage Detector to use it for classifying images.
 
-##### [GCP AI](https://cloud.google.com/products/ai)
+#### [GCP AI](https://cloud.google.com/products/ai)
 
 GCP AI is a offering from Google Cloud Platform enabling you to deploy your tensorflow/keras/scikit model to cloud.
 After deploying your model to GCP AI it is accessible in a similar way than Tensorflow Serving.
@@ -56,7 +56,7 @@ It's configurable through `gcp.ai` section.
 
 If you deployed your model to GCP AI, configure Garbage Classification to make classifications it's REST API endpoint.
 
-##### [GCP Cloud Vision](https://cloud.google.com/vision/docs)
+#### [GCP Cloud Vision](https://cloud.google.com/vision/docs)
 
 GCP Cloud Vision is a product from Google Cloud Platform providing ready-to-use state-of-the-art model for image classification and object recognition.
 
