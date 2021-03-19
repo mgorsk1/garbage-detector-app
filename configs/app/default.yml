@@ -1,0 +1,56 @@
+camera:
+  resolution:
+    width: ${CAMERA_RESOLUTION_WIDTH:-640}
+    height: ${CAMERA_RESOLUTION_HEIGHT:-480}
+  framerate: ${CAMERA_FRAMERATE:-10}
+  display: ${CAMERA_DISPLAY:-false}
+trigger:
+  cls: ${TRIGGER_CLS:-DistanceSensorTrigger}
+  parameters:
+    echo: ${TRIGGER_PARAMETERS_ECHO:-20}
+    trigger: ${TRIGGER_PARAMETERS_TRIGGER:-26}
+    distance_min: ${TRIGGER_PARAMETERS_DISTANCE_MIN:-25}
+    distance_max: ${TRIGGER_PARAMETERS_DISTANCE_MAX:-65}
+    led: ${TRIGGER_PARAMETERS_LED:-24}
+  delay: ${TRIGGER_DELAY:-3}
+leds:
+  green: ${LEDS_GREEN_PIN:-27}
+  red: ${LEDS_RED_PIN:-14}
+  yellow: ${LEDS_YELLOW_PIN:-23}
+  blue: ${LEDS_BLUE_PIN:-22}
+gcp:
+  project:
+    name: ${GCP_PROJECT_NAME:-experiment-week}
+    region: ${GCP_REGION:-us-central1}
+  ai:
+    model:
+      name: ${GCP_AI_MODEL_NAME:-garbage_model_h5_128_custom_prep}
+      version: ${GCP_AI_MODEL_VERSION:-1}
+  automl:
+    model:
+      id: ${GCP_AUTOML_MODEL_ID:-ICN4013336188638199808}
+    threshold: 0.6
+  bucket:
+    name: ${GCP_BUCKET_NAME:-garbage-detector-classifications}
+  vision:
+    classification:
+      threshold: ${GCP_VISION_CLASSIFICATION_THRESHOLD:-40}
+    image:
+      size:
+        width: ${GCP_VISION_IMAGE_SIZE_WIDTH:-2400}
+        height: ${GCP_VISION_IMAGE_SIZE_HEIGHT:-1800}
+backend:
+  scheme: ${BACKEND_SCHEME:-http}
+  host: ${BACKEND_HOST:-34.91.179.51}
+  port: ${BACKEND_PORT:-9000}
+tfserving:
+  scheme: ${TFSERVING_SCHEME:-http}
+  host: ${TFSERVING_HOST:-192.168.0.17}
+  port: ${TFSERVING_PORT:-8500}
+  model:
+    name: ${TFSERVING_MODEL_NAME:-gd}
+classifier:
+  cls: ${CLASSIFIER_CLS:-TensorflowServingGarbageClassifier}
+image:
+  final_size: ${IMAGE_FINAL_SIZE:-224}
+  crop_factor: ${IMAGE_CROP_FACTOR:-.33}
