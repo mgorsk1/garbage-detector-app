@@ -5,7 +5,7 @@ google-cloud-storage==1.29.0
 google-cloud-vision==1.0.0
 gpiozero==1.5.1
 numpy==1.18.5
-opencv-contrib-python==4.1.0.25  # norot
+opencv-contrib-python==4.1.1.26  # norot
 picamera==1.13
 pigpio==1.46
 piny==0.6.0
